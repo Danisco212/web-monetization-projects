@@ -8,24 +8,27 @@
     color-scheme: light dark;
 
     --spacing: 20px;
+    --gray: #2D3339
 }
 
-html {
-    height: 100%;
-}
+/*html {*/
+/*    height: 100%;*/
+/*}*/
 
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    flex-direction: column;*/
 
-    gap: var(--spacing);
-    margin: 0 calc(var(--spacing) * 2);
-    height: 100%;
+/*    gap: var(--spacing);*/
+    margin: 0 calc(var(--spacing) * 1.1);
+
+/*    height: 100%;*/
+overflow:scroll;
 
     font: -apple-system-short-body;
-    text-align: center;
+/*    text-align: center;*/
 }
 
 body:not(.platform-mac, .platform-ios) :is(.platform-mac, .platform-ios) {
@@ -55,7 +58,156 @@ body.state-on :is(.state-off, .state-unknown) {
 body.state-off :is(.state-on, .state-unknown) {
     display: none;
 }
+/**/
+/*button {*/
+/*    padding: 2em;*/
+/*    font-size: 1em;*/
+/*}*/
 
-button {
+/*
+ ios designs
+ Author: Daniel Isaac
+ */
+
+.main-header{
+    margin-top: 15px;
+    display:flex;
+    flex-direction:row;
+    width: 100%;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.open-settings{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #2D3339;
+    color: white;
     font-size: 1em;
+}
+
+.title{
+    margin-top: 5px;
+    font-weight: 700;
+    margin-left: 2px;
+    font-size: 1.5em;
+    color: #2D3339;
+}
+
+.hero-box{
+    overflow:hidden;
+    position: relative;
+    border-radius: 10px;
+    height: 250px;
+    width: 100%;
+    background-color: #FFEBC3;
+    display:flex;
+    flex-direction:row,
+    align-item:center;
+}
+
+.hero-detail{
+    margin-top: 40px;
+    width: 80%;
+    margin-left: 10px;
+    flex: 1,
+    margin-right: 10px;
+}
+
+.hero-detail p{
+    color: #665E4E;
+}
+
+.hero-box img{
+    position: absolute;
+    bottom: -10%;
+    right: 0;
+/*    margin-top: 50px;*/
+}
+
+.sub-title{
+/*    font-family: Arial, Helvetica, sans-serif;*/
+    font-size: 1.5em;
+    font-weight: 1900;
+    color: #2D3339;
+}
+
+.benefit-holder{
+    display: flex;
+    flex-direction: column;
+}
+
+.benefit-card{
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    display:flex;
+    flex-direction:row,
+    align-items: center;
+    background-color:white;
+    box-shadow: 0px 0px 3px #1a2d3339;
+}
+
+.benefit-details{
+    margin-left: 10px;
+}
+
+.benefit-details p{
+    margin: 0;
+}
+
+.benefit-details p:nth-child(1){
+    font-weight: 700;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.step-card{
+    display: flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content: flex-start;
+    margin: 0;
+}
+
+.step-card>p{
+    width: 80%;
+}
+
+.step-holder{
+    width: 15%;
+}
+
+.tagline{
+    color: #665E4E;
+    margin-top: -15px;
+    margin-bottom: 0px;
+}
+
+.step-count{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+/*    background-color: #27231D;*/
+    background-color: #FFEBC3;
+    color: black;
+}
+
+.highlight{
+    font-weight: 700;
+}
+
+
+#open-btn{
+    font-size: 4em;
+    color: "#808080";
+}
+
+#settings-div{
+    height: 100px;
+    background-color: #000000;
+    width: 150px;
 }
