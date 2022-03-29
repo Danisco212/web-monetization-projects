@@ -54,6 +54,9 @@
       "path": "packages/coil-wm-utils/tsconfig.build.json"
     },
     {
+      "path": "packages/danisaac-mv3-ext/tsconfig.build.json"
+    },
+    {
       "path": "packages/interledger-minute-extension/tsconfig.build.json"
     },
     {

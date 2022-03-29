@@ -69,6 +69,9 @@
       "@coil/wm-utils": [
         "packages/coil-wm-utils/src"
       ],
+      "@danisaac/mv3-ext": [
+        "packages/danisaac-mv3-ext/src"
+      ],
       "@interledger/minute-extension": [
         "packages/interledger-minute-extension/src"
       ],
