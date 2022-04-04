@@ -6,7 +6,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
   entry: {
     'content-script': './static/content-script.js',
-    injection: './static/injection/injection.js'
+    injection: './static/injection/injection.js',
+    background: './static/background-script.js'
   },
   module: {
     rules: [
