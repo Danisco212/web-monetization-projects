@@ -1433,6 +1433,7 @@ __metadata:
     "@coil/privacypass-sjcl": 0.0.0
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/jsonwebtoken": 8.5.8
     "@types/node": 14.18.12
@@ -1442,7 +1443,7 @@ __metadata:
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -1491,6 +1492,7 @@ __metadata:
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
     "@dier-makr/annotations": 0.0.0
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/jsonwebtoken": 8.5.8
     "@types/node": 14.18.12
@@ -1499,7 +1501,7 @@ __metadata:
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -1580,7 +1582,7 @@ __metadata:
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
     addons-linter: 4.14.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     crx-hotreload: 1.0.6
     debug: ^4.3.1
     eslint: 8.11.0
@@ -1643,6 +1645,7 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
@@ -1650,7 +1653,7 @@ __metadata:
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
     copy-dir: ^1.3.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     deepmerge: ^4.2.2
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
@@ -1705,6 +1708,7 @@ __metadata:
     "@coil/webpack-utils": 0.0.0
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/long": 4.0.1
     "@types/node": 14.18.12
@@ -1716,7 +1720,7 @@ __metadata:
     "@webmonetization/types": 0.0.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -1767,13 +1771,14 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -1819,6 +1824,7 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/keccak": 3.0.1
     "@types/node": 14.18.12
@@ -1830,7 +1836,7 @@ __metadata:
     asn1-parser: ^1.1.8
     atob: ^2.1.2
     btoa: ^1.2.1
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -1879,6 +1885,7 @@ __metadata:
     "@coil/client": 0.0.0
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/debug": 4.1.7
     "@types/get-port": 4.2.0
     "@types/jest": 27.4.1
@@ -1889,7 +1896,7 @@ __metadata:
     "@webmonetization/types": 0.0.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     debug: ^4.3.1
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
@@ -1939,6 +1946,7 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
@@ -1947,7 +1955,7 @@ __metadata:
     JSON2016: 1.0.0
     assert: ^2.0.0
     buffer: ^6.0.3
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     crypto-browserify: ^3.12.0
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
@@ -2000,13 +2008,14 @@ __metadata:
     "@coil/client": 0.0.0
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -2263,7 +2272,7 @@ __metadata:
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    babel-loader: ^8.2.4
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -2276,14 +2285,12 @@ __metadata:
     eslint-plugin-react: 7.29.4
     eslint-plugin-react-hooks: 4.3.0
     eslint-plugin-standard: 5.0.0
-    html-webpack-plugin: ^5.5.0
     husky: 7.0.4
     jest: 27.5.1
     lerna: 4.0.0
     lint-staged: 12.3.7
     prettier: 2.6.1
     rimraf: 3.0.2
-    schema-utils: ^4.0.0
     ts-jest: 27.1.4
     ts-loader: 9.2.8
     ts-node: 10.7.0
@@ -2343,13 +2350,14 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -2395,13 +2403,14 @@ __metadata:
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
     "@dier-makr/annotations": 0.0.0
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -2537,6 +2546,7 @@ __metadata:
     "@dier-makr/inversify": ^0.0.0
     "@material-ui/core": ^4.11.4
     "@material-ui/icons": ^4.11.2
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@types/react": 17.0.43
@@ -2551,7 +2561,7 @@ __metadata:
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
     addons-linter: 4.14.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     crx-hotreload: 1.0.6
     css-loader: 6.7.1
     debug: ^4.3.1
@@ -4084,13 +4094,14 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -4494,13 +4505,6 @@ __metadata:
   version: 7.0.9
   resolution: "@types/json-schema@npm:7.0.9"
   checksum: 259d0e25f11a21ba5c708f7ea47196bd396e379fddb79c76f9f4f62c945879dc21657904914313ec2754e443c5018ea8372362f323f30e0792897fdb2098a705
-  languageName: node
-  linkType: hard
-
-"@types/json-schema@npm:^7.0.5":
-  version: 7.0.11
-  resolution: "@types/json-schema@npm:7.0.11"
-  checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
   languageName: node
   linkType: hard
 
@@ -5122,6 +5126,7 @@ __metadata:
     "@coil/webpack-utils": ^0.0.0
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
@@ -5130,7 +5135,7 @@ __metadata:
     JSON2016: 1.0.0
     assert: ^2.0.0
     buffer: ^6.0.3
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     crx-hotreload: ^1.0.6
     crypto-browserify: ^3.12.0
     eslint: 8.11.0
@@ -5187,6 +5192,7 @@ __metadata:
     "@commitlint/config-conventional": 16.2.1
     "@hot-loader/react-dom": 17.0.2
     "@types/body-parser": 1.19.2
+    "@types/chrome": ^0.0.180
     "@types/express": 4.17.12
     "@types/figlet": 1.5.4
     "@types/jest": 27.4.1
@@ -5202,7 +5208,7 @@ __metadata:
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
     body-parser: ^1.19.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -5261,6 +5267,7 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@types/node-fetch": 2.6.1
@@ -5269,7 +5276,7 @@ __metadata:
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -5318,6 +5325,7 @@ __metadata:
     "@coil/webpack-utils": ^0.0.0
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@types/react": 17.0.43
@@ -5326,7 +5334,7 @@ __metadata:
     "@webmonetization/types": 0.0.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -5376,6 +5384,7 @@ __metadata:
     "@commitlint/config-conventional": 16.2.1
     "@hot-loader/react-dom": 17.0.2
     "@types/ajv": 1.0.0
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@types/react": 17.0.43
@@ -5387,7 +5396,7 @@ __metadata:
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
     ajv: ^8.6.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -5437,13 +5446,14 @@ __metadata:
     "@babel/preset-typescript": 7.16.7
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
     "@typescript-eslint/parser": 5.16.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -5490,6 +5500,7 @@ __metadata:
     "@commitlint/cli": 16.2.3
     "@commitlint/config-conventional": 16.2.1
     "@dier-makr/annotations": 0.0.0
+    "@types/chrome": ^0.0.180
     "@types/jest": 27.4.1
     "@types/node": 14.18.12
     "@typescript-eslint/eslint-plugin": 5.16.0
@@ -5498,7 +5509,7 @@ __metadata:
     "@webmonetization/types": 0.0.0
     "@yarnpkg/pnpify": 3.1.1
     JSON2016: 1.0.0
-    copy-webpack-plugin: 9.1.0
+    copy-webpack-plugin: ^10.2.4
     eslint: 8.11.0
     eslint-config-prettier: 8.5.0
     eslint-import-resolver-node: 0.3.6
@@ -6889,21 +6900,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.8.0
   checksum: 4e93e6e9fb996cc5f1505e924eb8e8cc7b25c294ba9629762a2715390f48af6a4c14dbb84cd9730013ac0e03267a5a9aa2fb6318c544489cda7f50f4e506def4
-  languageName: node
-  linkType: hard
-
-"babel-loader@npm:^8.2.4":
-  version: 8.2.4
-  resolution: "babel-loader@npm:8.2.4"
-  dependencies:
-    find-cache-dir: ^3.3.1
-    loader-utils: ^2.0.0
-    make-dir: ^3.1.0
-    schema-utils: ^2.6.5
-  peerDependencies:
-    "@babel/core": ^7.0.0
-    webpack: ">=2"
-  checksum: 4968251fc4af4279c8e44adba523ed4ad18942f04b37061298e81640d09a570f66e6d53948e39a7d3c3d24ca2b025f0a07c606fadd8e3fbffa8912fd789fd4f0
   languageName: node
   linkType: hard
 
@@ -8439,13 +8435,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commondir@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "commondir@npm:1.0.1"
-  checksum: 59715f2fc456a73f68826285718503340b9f0dd89bfffc42749906c5cf3d4277ef11ef1cca0350d0e79204f00f1f6d83851ececc9095dc88512a697ac0b9bdcb
-  languageName: node
-  linkType: hard
-
 "compare-func@npm:^2.0.0":
   version: 2.0.0
   resolution: "compare-func@npm:2.0.0"
@@ -8761,22 +8750,6 @@ __metadata:
   version: 1.3.0
   resolution: "copy-dir@npm:1.3.0"
   checksum: 92779cd699964f1f13d4e6beeac2bc45a365f21e6e60956daaf4d565a20f56eebda0994fbf7aaa741bee7bbf56f854374667b38db1589adaa1148048c6b35f4d
-  languageName: node
-  linkType: hard
-
-"copy-webpack-plugin@npm:9.1.0":
-  version: 9.1.0
-  resolution: "copy-webpack-plugin@npm:9.1.0"
-  dependencies:
-    fast-glob: ^3.2.7
-    glob-parent: ^6.0.1
-    globby: ^11.0.3
-    normalize-path: ^3.0.0
-    schema-utils: ^3.1.1
-    serialize-javascript: ^6.0.0
-  peerDependencies:
-    webpack: ^5.1.0
-  checksum: 06cb4fb6fc99a95ccfd3169115ee57f64953e5b4075900fc8faab98b7e7d3fcd6915b125fdb98c919cfd55e581a8444f5c6b9dbb342cbd60b154d8fb3f79f2b9
   languageName: node
   linkType: hard
 
@@ -11525,17 +11498,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-cache-dir@npm:^3.3.1":
-  version: 3.3.2
-  resolution: "find-cache-dir@npm:3.3.2"
-  dependencies:
-    commondir: ^1.0.1
-    make-dir: ^3.0.2
-    pkg-dir: ^4.1.0
-  checksum: 1e61c2e64f5c0b1c535bd85939ae73b0e5773142713273818cc0b393ee3555fb0fd44e1a5b161b8b6c3e03e98c2fcc9c227d784850a13a90a8ab576869576817
-  languageName: node
-  linkType: hard
-
 "find-up@npm:5.0.0, find-up@npm:^5.0.0":
   version: 5.0.0
   resolution: "find-up@npm:5.0.0"
@@ -12425,7 +12387,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"globby@npm:^11.0.1, globby@npm:^11.0.2, globby@npm:^11.0.3, globby@npm:^11.0.4":
+"globby@npm:^11.0.1, globby@npm:^11.0.2, globby@npm:^11.0.4":
   version: 11.0.4
   resolution: "globby@npm:11.0.4"
   dependencies:
@@ -12878,7 +12840,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:5.5.0, html-webpack-plugin@npm:^5.5.0":
+"html-webpack-plugin@npm:5.5.0":
   version: 5.5.0
   resolution: "html-webpack-plugin@npm:5.5.0"
   dependencies:
@@ -15980,7 +15942,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"make-dir@npm:^3.0.0, make-dir@npm:^3.0.2, make-dir@npm:^3.1.0":
+"make-dir@npm:^3.0.0":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
   dependencies:
@@ -18333,7 +18295,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"pkg-dir@npm:4.2.0, pkg-dir@npm:^4.1.0, pkg-dir@npm:^4.2.0":
+"pkg-dir@npm:4.2.0, pkg-dir@npm:^4.2.0":
   version: 4.2.0
   resolution: "pkg-dir@npm:4.2.0"
   dependencies:
@@ -20040,18 +20002,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^2.6.5":
-  version: 2.7.1
-  resolution: "schema-utils@npm:2.7.1"
-  dependencies:
-    "@types/json-schema": ^7.0.5
-    ajv: ^6.12.4
-    ajv-keywords: ^3.5.2
-  checksum: 32c62fc9e28edd101e1bd83453a4216eb9bd875cc4d3775e4452b541908fa8f61a7bbac8ffde57484f01d7096279d3ba0337078e85a918ecbeb72872fb09fb2b
-  languageName: node
-  linkType: hard
-
-"schema-utils@npm:^3.0.0, schema-utils@npm:^3.1.0, schema-utils@npm:^3.1.1":
+"schema-utils@npm:^3.0.0, schema-utils@npm:^3.1.0":
   version: 3.1.1
   resolution: "schema-utils@npm:3.1.1"
   dependencies:

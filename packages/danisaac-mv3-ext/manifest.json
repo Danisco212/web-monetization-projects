@@ -4,24 +4,50 @@
     "description": "This is a test injection extension made with mv3",
     "version": "1.0.0",
     "background": {
-      "service_worker": "background.js"
+        "service_worker": "background.js"
     },
     "permissions": [
-      "webNavigation"
+        "webNavigation",
+        "tabs"
     ],
     "icons": {
-        "16": "/images/icon16.png",
-        "48": "/images/icon48.png",
-        "128": "/images/icon128.png"
+        "16": "/res/icon16.png",
+        "48": "/res/icon48.png",
+        "128": "/res/icon128.png"
     },
-    "content_scripts": [{
-        "matches": ["<all_urls>"],
-        "js": ["content-script.js"]
-    }],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
     "web_accessible_resources": [
         {
-          "resources": [ "injection.js" ],
-          "matches": [ "<all_urls>" ]
+            "resources": [
+                "/static/injection.js"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
         }
-      ]
+    ],
+    "$targets": {
+        "firefox": {
+            "permissions": [
+                "tabs"
+            ]
+        },
+        "safari": {
+            "permissions": [
+                "tabs"
+            ]
+        }
+    }
 }
