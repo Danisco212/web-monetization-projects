@@ -6,10 +6,20 @@ document.documentElement.appendChild(script)
 document.documentElement.removeChild(script)
 
 window.addEventListener('load', function () {
-  let metaTag = this.document.querySelector('meta[name="monetization"]').content
+  let metaTag = this.document.querySelector('meta[name="monetization"]')
   if (metaTag) {
-    this.chrome.runtime.sendMessage({ meta: metaTag }, function (respnse) {
-      console.log(respnse)
-    })
+    this.chrome.runtime.sendMessage(
+      { meta: metaTag.content },
+      function (respnse) {
+        console.log(respnse)
+      }
+    )
+  } else {
+    this.chrome.runtime.sendMessage(
+      { meta: 'there is no monetization tag' },
+      function (respnse) {
+        console.log(respnse)
+      }
+    )
   }
 })
