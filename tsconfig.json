@@ -96,5 +96,5 @@
   "include": [
     "packages/**/*.ts",
     "packages/**/*.tsx"
-  ]
+, "packages/danisaac-mv3-ext/src/injection/injection.js"  ]
 }

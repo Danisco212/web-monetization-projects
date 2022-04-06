@@ -12,20 +12,29 @@ export const contentScript = () => {
     const metaTag = this.document.querySelector('meta[name="monetization"]')
     if (metaTag) {
       this.chrome.runtime.sendMessage(
-        { meta: metaTag.textContent },
-        function (respnse) {
-          console.log(respnse)
+        { meta: metaTag.getAttribute('content') },
+        function (response) {
+          console.log(response)
         }
       )
     } else {
       this.chrome.runtime.sendMessage(
         { meta: 'there is no monetization tag' },
-        function (respnse) {
-          console.log(respnse)
+        function (response) {
+          console.log(response)
         }
       )
     }
   })
+
+  setTimeout(() => {
+    chrome.runtime.sendMessage(
+      { meta: 'This is the delayed data' },
+      function (response) {
+        console.log(response)
+      }
+    )
+  }, 5000)
 }
 
 contentScript()
