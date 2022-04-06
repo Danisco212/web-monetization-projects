@@ -27,6 +27,7 @@ export const contentScript = () => {
     }
   })
 
+  // sending delayed message to test of the message receive stays active
   setTimeout(() => {
     chrome.runtime.sendMessage(
       { meta: 'This is the delayed data' },
