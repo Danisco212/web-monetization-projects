@@ -22,6 +22,11 @@ const lifecycleLogs = () => {
     console.log('on completed')
     currentState = 'load complete'
   })
+
+  chrome.runtime.onSuspend.addListener(() => {
+    console.log('suspended')
+    currentState = 'suspended'
+  })
 }
 
 export const background = () => {
@@ -37,6 +42,7 @@ export const background = () => {
     }
     // send newMessage back to content-script to perform action with it
     sendResponse(newMessage)
+    return true
   })
 }
 
