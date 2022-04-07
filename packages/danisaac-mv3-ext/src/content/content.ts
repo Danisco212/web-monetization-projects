@@ -35,7 +35,7 @@ export const contentScript = () => {
         console.log(response)
       }
     )
-  }, 5000)
+  }, 50000)
 }
 
 contentScript()

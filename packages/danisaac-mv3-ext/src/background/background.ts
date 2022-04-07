@@ -5,7 +5,7 @@ let currentState = 'init'
 const lifecycleLogs = () => {
   chrome.webNavigation.onBeforeNavigate.addListener(e => {
     console.log('on extension loaded', e)
-    currentState = 'init'
+    currentState = 'new load'
   })
 
   chrome.webNavigation.onCommitted.addListener(e => {

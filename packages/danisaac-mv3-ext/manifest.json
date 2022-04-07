@@ -37,17 +37,5 @@
                 "<all_urls>"
             ]
         }
-    ],
-    "$targets": {
-        "firefox": {
-            "permissions": [
-                "tabs"
-            ]
-        },
-        "safari": {
-            "permissions": [
-                "tabs"
-            ]
-        }
-    }
+    ]
 }
