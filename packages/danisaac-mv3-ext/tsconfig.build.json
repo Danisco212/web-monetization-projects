@@ -22,6 +22,9 @@
     },
     {
       "path": "../coil-client/tsconfig.build.json"
-    }
+    },
+    {
+      "path": "../coil-webpack-utils/tsconfig.build.json"
+    },
   ]
 }

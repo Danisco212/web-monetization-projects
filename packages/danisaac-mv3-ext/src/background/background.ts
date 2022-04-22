@@ -33,17 +33,18 @@ export const background = () => {
   // initializing the logs
   lifecycleLogs()
 
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    // action can be performed here with the message and passed in the sendResponse
-    // sample action
-    const newMessage = {
-      receivedMessage: message,
-      state: currentState
+  chrome.runtime.onMessage.addListener(
+    async (message, sender, sendResponse) => {
+      // action can be performed here with the message and passed in the sendResponse
+      // sample action
+      const newMessage = {
+        receivedMessage: message,
+        state: currentState
+      }
+      // send newMessage back to content-script to perform action with it
+      sendResponse(newMessage)
+      return false
     }
-    // send newMessage back to content-script to perform action with it
-    sendResponse(newMessage)
-    return true
-  })
+  )
 }
-
 background()

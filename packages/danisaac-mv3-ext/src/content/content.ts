@@ -1,3 +1,5 @@
+import { payout } from '../background/payout/mv3-payout'
+
 export const contentScript = () => {
   const script = document.createElement('script')
 
@@ -8,13 +10,14 @@ export const contentScript = () => {
   // clean it up afterwards
   document.documentElement.removeChild(script)
 
-  window.addEventListener('load', function () {
+  window.addEventListener('load', async function () {
     const metaTag = this.document.querySelector('meta[name="monetization"]')
     if (metaTag) {
       this.chrome.runtime.sendMessage(
         { meta: metaTag.getAttribute('content') },
-        function (response) {
+        async function (response) {
           console.log(response)
+          await payout(response.receivedMessage.meta, console.log)
         }
       )
     } else {
@@ -26,16 +29,6 @@ export const contentScript = () => {
       )
     }
   })
-
-  // sending delayed message to test of the message receive stays active
-  setTimeout(() => {
-    chrome.runtime.sendMessage(
-      { meta: 'This is the delayed data' },
-      function (response) {
-        console.log(response)
-      }
-    )
-  }, 50000)
 }
 
 contentScript()

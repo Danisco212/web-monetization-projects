@@ -33,8 +33,13 @@
     "upkeep": "cd ../.. && yarn upkeep"
   },
   "dependencies": {
-    "@coil/client": "0.0.0",
-    "@types/chrome": "^0.0.180"
+    "@coil/polyfill-utils": "workspace:^",
+    "@types/chrome": "^0.0.180",
+    "@webmonetization/polyfill-utils": "workspace:^",
+    "@webmonetization/types": "workspace:^",
+    "ilp-plugin-btp": "^1.5.0",
+    "ilp-protocol-stream": "^2.7.1",
+    "node-fetch": "^3.2.3"
   },
   "devDependencies": {
     "@babel/core": "7.17.8",
