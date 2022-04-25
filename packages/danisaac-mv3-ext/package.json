@@ -39,7 +39,8 @@
     "@webmonetization/types": "workspace:^",
     "ilp-plugin-btp": "^1.5.0",
     "ilp-protocol-stream": "^2.7.1",
-    "node-fetch": "^3.2.3"
+    "node-fetch": "^3.2.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "7.17.8",
@@ -52,6 +53,7 @@
     "@commitlint/config-conventional": "16.2.1",
     "@types/jest": "27.4.1",
     "@types/node": "14.18.12",
+    "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.16.0",
     "@typescript-eslint/parser": "5.16.0",
     "@yarnpkg/pnpify": "3.1.1",

@@ -3,6 +3,7 @@
   "extends": "../../tsconfig.build.settings.json",
   "compilerOptions": {
     "composite": true,
+    "noImplicitAny": false,
     "outDir": "./build",
     "tsBuildInfoFile": "./build/tsconfig.build.tsbuildinfo",
     "rootDir": "src"

@@ -13,8 +13,8 @@ export const env = (key: string, defaultValue?: string): string => {
 }
 
 export const COIL_DOMAIN = env('COIL_DOMAIN', 'https://coil.com')
-export const COIL_USER = env('COIL_USER')
-export const COIL_PASSWORD = env('COIL_PASSWORD')
+export const COIL_USER = env('COIL_USER', 'danielworkisaac@gmail.com')
+export const COIL_PASSWORD = env('COIL_PASSWORD', 'Sant141cat1on')
 
 const ClientOptions = class Options extends GraphQlClient.Options {
   coilDomain = COIL_DOMAIN

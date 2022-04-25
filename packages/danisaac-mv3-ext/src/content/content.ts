@@ -1,5 +1,3 @@
-import { payout } from '../background/payout/mv3-payout'
-
 export const contentScript = () => {
   const script = document.createElement('script')
 
@@ -15,9 +13,9 @@ export const contentScript = () => {
     if (metaTag) {
       this.chrome.runtime.sendMessage(
         { meta: metaTag.getAttribute('content') },
-        async function (response) {
+        async function (response: any) {
           console.log(response)
-          await payout(response.receivedMessage.meta, console.log)
+          // await payout(response.receivedMessage.meta, console.log)
         }
       )
     } else {

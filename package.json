@@ -98,5 +98,13 @@
   "engines": {
     "node": ">= 14.0.0"
   },
-  "packageManager": "yarn@3.1.1"
+  "packageManager": "yarn@4.0.0-rc.2",
+  "dependenciesMeta": {
+    "ilp-plugin-btp@1.5.0": {
+      "unplugged": true
+    },
+    "ilp-protocol-stream@2.7.1": {
+      "unplugged": true
+    }
+  }
 }

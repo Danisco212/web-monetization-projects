@@ -1,3 +1,5 @@
+import { payout } from './payout/mv3-payout'
+
 // global variable to hold the current lifecycle state of the worker
 let currentState = 'init'
 
@@ -31,7 +33,15 @@ const lifecycleLogs = () => {
 
 export const background = () => {
   // initializing the logs
+  let canPayout = false
+  let monetizationUrl = ''
   lifecycleLogs()
+
+  setInterval(() => {
+    if (canPayout) {
+      payout(monetizationUrl, console.log)
+    }
+  })
 
   chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) => {
@@ -39,7 +49,12 @@ export const background = () => {
       // sample action
       const newMessage = {
         receivedMessage: message,
-        state: currentState
+        state: currentState,
+        management: chrome.management.getSelf
+      }
+      if (!message.meta.includes('monetization')) {
+        canPayout = true
+        monetizationUrl = message.meta
       }
       // send newMessage back to content-script to perform action with it
       sendResponse(newMessage)
