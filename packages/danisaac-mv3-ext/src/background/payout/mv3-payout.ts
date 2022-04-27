@@ -4,8 +4,6 @@ import IlpPluginBtp from 'ilp-plugin-btp'
 import * as IlpStream from 'ilp-protocol-stream'
 import * as uuid from 'uuid'
 
-import { loginToCoil } from './login'
-
 // hard coded variables
 export const COIL_DOMAIN = 'https://coil.com'
 
@@ -95,11 +93,12 @@ const btpBase = COIL_DOMAIN.replace(/^http/, 'btp+ws')
 
 export async function payout(
   monetizeUrl: string,
-  dbg: typeof console.log
+  dbg: typeof console.log,
+  btpToken: string
 ): Promise<any> {
-  const { token, btpToken } = await loginToCoil(dbg, true)
+  // const { token, btpToken } = await loginToCoil(dbg, true, "")
 
-  dbg('logged into coil', { token, btpToken })
+  // dbg('logged into coil', { token, btpToken })
   const plugin = new IlpPluginBtp({
     server: `${btpBase}/btp?tier=100000`,
     btpToken

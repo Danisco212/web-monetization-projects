@@ -13,19 +13,23 @@ const env = (key: string, defaultValue?: string): string => {
 }
 
 export const COIL_DOMAIN = env('COIL_DOMAIN', 'https://coil.com')
-export const COIL_USER = env('COIL_USER')
-export const COIL_PASSWORD = env('COIL_PASSWORD')
+// export const COIL_USER = env('COIL_USER')
+// export const COIL_PASSWORD = env('COIL_PASSWORD')
 
 const ClientOptions = class Options extends GraphQlClient.Options {
   coilDomain = COIL_DOMAIN
 }
 
-export async function loginToCoil(dbg: typeof console.log, whoAmI: boolean) {
+export async function loginToCoil(
+  dbg: typeof console.log,
+  whoAmI: boolean,
+  user: any
+) {
   const client = new GraphQlClient(new ClientOptions())
   if (dbg) {
     dbg('logging in')
   }
-  const token = await client.login(COIL_USER, COIL_PASSWORD)
+  const token = await client.login(user.email, user.password)
   if (dbg) {
     dbg('logged in')
   }

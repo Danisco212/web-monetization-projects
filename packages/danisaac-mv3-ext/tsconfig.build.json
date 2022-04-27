@@ -6,7 +6,8 @@
     "noImplicitAny": false,
     "outDir": "./build",
     "tsBuildInfoFile": "./build/tsconfig.build.tsbuildinfo",
-    "rootDir": "src"
+    "rootDir": "src",
+    "jsx": "react-jsx"
   },
   "include": [
     "src/**/*.tsx",

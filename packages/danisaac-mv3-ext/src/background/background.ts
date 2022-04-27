@@ -1,3 +1,5 @@
+// import { payout } from './payout/mv3-payout'
+
 import { payout } from './payout/mv3-payout'
 
 // global variable to hold the current lifecycle state of the worker
@@ -31,33 +33,40 @@ const lifecycleLogs = () => {
   })
 }
 
+function attemptPayout(hasMonetization: boolean, monetizationTag: string) {
+  // check if there is a meta tag
+  if (hasMonetization) {
+    // payout to the site
+    chrome.storage.local.get(['btpToken'], async function (result: any) {
+      if (result.btpToken) {
+        console.log('the btpToken is', result)
+        await payout(monetizationTag, console.log, result.btpToken)
+      } else {
+        console.log('not logged into coil')
+      }
+    })
+  } else {
+    console.log('Not tag to payout')
+  }
+}
+
 export const background = () => {
   // initializing the logs
   lifecycleLogs()
 
-  let connection: any = null
-
-  chrome.tabs.onActivated.addListener(async function (activeInfo: any) {
-    if (connection) {
-      console.log(connection)
-      connection.end()
-    }
-  })
+  let hasMonetization = false
+  let monetizationTag = ''
 
   chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) => {
-      // action can be performed here with the message and passed in the sendResponse
-      // sample action
-      const newMessage = {
-        receivedMessage: message,
-        state: currentState,
-        management: chrome.management.getSelf
+      // if the message is login successful try to payout to site
+      if (message !== 'logged in') {
+        if (!message.meta.includes('monetization')) {
+          hasMonetization = true
+          monetizationTag = message.meta
+        }
       }
-      if (!message.meta.includes('monetization')) {
-        connection = await payout(message.meta, console.log)
-      }
-      // send newMessage back to content-script to perform action with it
-      sendResponse(newMessage)
+      attemptPayout(hasMonetization, monetizationTag)
       return false
     }
   )
