@@ -1479,7 +1479,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@coil/client@npm:0.0.0, @coil/client@npm:^0.0.0, @coil/client@workspace:packages/coil-client":
+"@coil/client@npm:0.0.0, @coil/client@npm:^0.0.0, @coil/client@workspace:^, @coil/client@workspace:packages/coil-client":
   version: 0.0.0-use.local
   resolution: "@coil/client@workspace:packages/coil-client"
   dependencies:
@@ -2262,6 +2262,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": "npm:7.17.3"
     "@babel/preset-env": "npm:7.16.11"
     "@babel/preset-typescript": "npm:7.16.7"
+    "@coil/client": "workspace:^"
     "@coil/polyfill-utils": "workspace:^"
     "@commitlint/cli": "npm:16.2.3"
     "@commitlint/config-conventional": "npm:16.2.1"

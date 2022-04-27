@@ -33,6 +33,7 @@
     "upkeep": "cd ../.. && yarn upkeep"
   },
   "dependencies": {
+    "@coil/client": "workspace:^",
     "@coil/polyfill-utils": "workspace:^",
     "@types/chrome": "^0.0.180",
     "@webmonetization/polyfill-utils": "workspace:^",

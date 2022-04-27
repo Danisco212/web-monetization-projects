@@ -4,6 +4,8 @@ import IlpPluginBtp from 'ilp-plugin-btp'
 import * as IlpStream from 'ilp-protocol-stream'
 import * as uuid from 'uuid'
 
+import { loginToCoil } from './login'
+
 // hard coded variables
 export const COIL_DOMAIN = 'https://coil.com'
 
@@ -88,19 +90,24 @@ const btpBase = COIL_DOMAIN.replace(/^http/, 'btp+ws')
 
 // hard coded token for test
 // generated from yarn ts-node /Users/danielisaac/Desktop/Coil/coil_extension/packages/coil-oauth-scripts/src/bin/coil-it.ts
-const btpToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja3g0Y3FsNTVxY3FjMDg4M29xMWJ6d21sIiwidXNlclBlcm1hbmVudElkIjoiMzE1MWQ1ZDMtY2ZmOC00YWY1LTk4OWUtMDYxOTQ3MTdmMjA4IiwidGhyb3VnaHB1dCI6MTAwMDAwLCJhZ2ciOjQ1MDAwMDAwMDAsImN1cnJlbmN5IjoiVVNEIiwic2NhbGUiOjksImlhdCI6MTY1MDgyOTIwMywiZXhwIjoxNjUwODMyODAzfQ.YzWrr1a5kjF53gtAIyuRlNF7zfVd5ZMPksrobAgrfiY'
+// const btpToken =
+//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja3g0Y3FsNTVxY3FjMDg4M29xMWJ6d21sIiwidXNlclBlcm1hbmVudElkIjoiMzE1MWQ1ZDMtY2ZmOC00YWY1LTk4OWUtMDYxOTQ3MTdmMjA4IiwidGhyb3VnaHB1dCI6MTAwMDAwLCJhZ2ciOjQ1MDAwMDAwMDAsImN1cnJlbmN5IjoiVVNEIiwic2NhbGUiOjksImlhdCI6MTY1MTA1NzgyMSwiZXhwIjoxNjUxMDYxNDIxfQ.LcFqZ-WEk6NHbqM9JRXTs-BGoQTvGa5ynncR7NqoJOk'
 
 export async function payout(
   monetizeUrl: string,
   dbg: typeof console.log
-): Promise<void> {
+): Promise<any> {
+  const { token, btpToken } = await loginToCoil(dbg, true)
+
+  dbg('logged into coil', { token, btpToken })
   const plugin = new IlpPluginBtp({
     server: `${btpBase}/btp?tier=100000`,
     btpToken
   })
   const spspUrl = pointerToUrl(monetizeUrl)
   const monetizationId = uuid.v4()
+
+  dbg('receiving details')
 
   const details = await getPaymentDetails(spspUrl, monetizationId)
   dbg('received details', { details })
@@ -129,6 +136,7 @@ export async function payout(
   dbg('connected')
 
   startStream(`main`, connection, dbg)
+  return connection
 }
 
 // might need to inject setImmediate into document (injection.js)

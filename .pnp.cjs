@@ -3618,6 +3618,7 @@ const RAW_RUNTIME_STATE =
           ["@babel/plugin-proposal-object-rest-spread", "virtual:e0cd45c1a19ea8aa89ff35179dd8110081538629e89b121cb83c1fab78c0aab22afae02cd6e5ba8fc350eb38d36b2487d5869c2d2c43c2fbf770269d2f45568e#npm:7.17.3"],\
           ["@babel/preset-env", "virtual:e0cd45c1a19ea8aa89ff35179dd8110081538629e89b121cb83c1fab78c0aab22afae02cd6e5ba8fc350eb38d36b2487d5869c2d2c43c2fbf770269d2f45568e#npm:7.16.11"],\
           ["@babel/preset-typescript", "virtual:e0cd45c1a19ea8aa89ff35179dd8110081538629e89b121cb83c1fab78c0aab22afae02cd6e5ba8fc350eb38d36b2487d5869c2d2c43c2fbf770269d2f45568e#npm:7.16.7"],\
+          ["@coil/client", "workspace:packages/coil-client"],\
           ["@coil/polyfill-utils", "workspace:packages/coil-polyfill-utils"],\
           ["@commitlint/cli", "npm:16.2.3"],\
           ["@commitlint/config-conventional", "npm:16.2.1"],\

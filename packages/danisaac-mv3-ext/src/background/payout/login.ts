@@ -1,6 +1,6 @@
 import { GraphQlClient } from '@coil/client'
 
-export const env = (key: string, defaultValue?: string): string => {
+const env = (key: string, defaultValue?: string): string => {
   const value = process.env[key]
   if (value === undefined) {
     if (defaultValue === undefined) {
@@ -20,7 +20,7 @@ const ClientOptions = class Options extends GraphQlClient.Options {
   coilDomain = COIL_DOMAIN
 }
 
-export async function login(dbg?: typeof console.log, whoAmI?: boolean) {
+export async function loginToCoil(dbg: typeof console.log, whoAmI: boolean) {
   const client = new GraphQlClient(new ClientOptions())
   if (dbg) {
     dbg('logging in')

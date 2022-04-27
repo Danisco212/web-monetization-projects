@@ -33,13 +33,14 @@ const lifecycleLogs = () => {
 
 export const background = () => {
   // initializing the logs
-  let canPayout = false
-  let monetizationUrl = ''
   lifecycleLogs()
 
-  setInterval(() => {
-    if (canPayout) {
-      payout(monetizationUrl, console.log)
+  let connection: any = null
+
+  chrome.tabs.onActivated.addListener(async function (activeInfo: any) {
+    if (connection) {
+      console.log(connection)
+      connection.end()
     }
   })
 
@@ -53,8 +54,7 @@ export const background = () => {
         management: chrome.management.getSelf
       }
       if (!message.meta.includes('monetization')) {
-        canPayout = true
-        monetizationUrl = message.meta
+        connection = await payout(message.meta, console.log)
       }
       // send newMessage back to content-script to perform action with it
       sendResponse(newMessage)
