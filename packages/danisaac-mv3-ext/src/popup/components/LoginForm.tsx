@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Message } from '../../background/background'
 import { loginToCoil } from '../../background/payout/login'
 
 import { CustomInput } from './CustomInput'
@@ -53,7 +54,9 @@ export function LoginForm() {
     // testing local storage (not adviced to save token this way, but we testing so it fine :))
     chrome.storage.local.set({ btpToken: userAuth.btpToken }, function () {
       console.log('saved the btpToken to local storage')
-      chrome.runtime.sendMessage('logged in', async function (response: any) {
+      const message: Message = { data: '', monetizationTag: '' }
+      message.data = 'logged in'
+      chrome.runtime.sendMessage(message, async function (response: any) {
         console.log(response)
         window.close()
       })

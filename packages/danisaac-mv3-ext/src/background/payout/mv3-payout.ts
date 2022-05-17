@@ -7,7 +7,7 @@ import * as uuid from 'uuid'
 // hard coded variables
 export const COIL_DOMAIN = 'https://coil.com'
 
-const pointerToUrl = (url: string) => url.replace(/^\$/, 'https://')
+const pointerToUrl = (url: string) => url?.replace(/^\$/, 'https://')
 
 interface SPSPResponse {
   destination_account: string

@@ -1,37 +1,5 @@
-// import { payout } from './payout/mv3-payout'
-
+import { lifecycleLogs } from './lifecycle'
 import { payout } from './payout/mv3-payout'
-
-// global variable to hold the current lifecycle state of the worker
-let currentState = 'init'
-
-// lifecycle logging for service worker
-const lifecycleLogs = () => {
-  chrome.webNavigation.onBeforeNavigate.addListener(e => {
-    console.log('on extension loaded', e)
-    currentState = 'new load'
-  })
-
-  chrome.webNavigation.onCommitted.addListener(e => {
-    console.log('on commited')
-    currentState = 'commit'
-  })
-
-  chrome.webNavigation.onDOMContentLoaded.addListener(e => {
-    console.log('on DOM completed')
-    currentState = 'DOM completed'
-  })
-
-  chrome.webNavigation.onCompleted.addListener(e => {
-    console.log('on completed')
-    currentState = 'load complete'
-  })
-
-  chrome.runtime.onSuspend.addListener(() => {
-    console.log('suspended')
-    currentState = 'suspended'
-  })
-}
 
 function attemptPayout(hasMonetization: boolean, monetizationTag: string) {
   // check if there is a meta tag
@@ -50,6 +18,11 @@ function attemptPayout(hasMonetization: boolean, monetizationTag: string) {
   }
 }
 
+export interface Message {
+  monetizationTag: string
+  data: Record<string, unknown> | string | undefined
+}
+
 export const background = () => {
   // initializing the logs
   lifecycleLogs()
@@ -58,12 +31,12 @@ export const background = () => {
   let monetizationTag = ''
 
   chrome.runtime.onMessage.addListener(
-    async (message, sender, sendResponse) => {
+    async (message: Message, sender, sendResponse) => {
       // if the message is login successful try to payout to site
-      if (message !== 'logged in') {
-        if (!message.meta.includes('monetization')) {
+      if (message.data !== 'logged in') {
+        if (!message.monetizationTag.includes('monetization')) {
           hasMonetization = true
-          monetizationTag = message.meta
+          monetizationTag = message.monetizationTag
         }
       }
       attemptPayout(hasMonetization, monetizationTag)

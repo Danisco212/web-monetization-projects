@@ -1,3 +1,5 @@
+import { Message } from '../background/background'
+
 export const contentScript = () => {
   const script = document.createElement('script')
 
@@ -10,21 +12,20 @@ export const contentScript = () => {
 
   window.addEventListener('load', async function () {
     const metaTag = this.document.querySelector('meta[name="monetization"]')
+    const message: Message = {
+      monetizationTag: '',
+      data: ''
+    }
     if (metaTag) {
-      this.chrome.runtime.sendMessage(
-        { meta: metaTag.getAttribute('content') },
-        async function (response: any) {
-          console.log(response)
-          // await payout(response.receivedMessage.meta, console.log)
-        }
-      )
+      message.monetizationTag = metaTag.getAttribute('content') ?? ''
+      chrome.runtime.sendMessage(message, async function (response: any) {
+        console.log(response)
+        // await payout(response.receivedMessage.meta, console.log)
+      })
     } else {
-      this.chrome.runtime.sendMessage(
-        { meta: 'there is no monetization tag' },
-        function (response) {
-          console.log(response)
-        }
-      )
+      chrome.runtime.sendMessage(message, function (response: any) {
+        console.log(response)
+      })
     }
   })
 }
