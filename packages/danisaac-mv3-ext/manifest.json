@@ -13,6 +13,7 @@
         "webNavigation",
         "tabs",
         "management",
+        "action",
         "storage",
         "notifications"
     ],

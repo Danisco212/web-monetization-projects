@@ -63,6 +63,56 @@ export function LoginForm() {
     })
   }
 
+  function handleChangeIcon() {
+    const offCanvas = document.createElement('canvas')
+    // const canvas = new OffscreenCanvas(16, 16);
+    const context = offCanvas.getContext('2d')
+    // if(context){
+    //   const circle = {
+    //     x: 10,
+    //     y: 10,
+    //     size: 5,
+    //     dy: 5,
+    //     dx: 1
+    //   }
+    //   let forward = true;
+    //   function drawCircle(){
+    //     if(context){
+    //       context.beginPath();
+    //       context.arc(circle.x, circle.y, circle.size, 0, Math.PI * 2);
+    //       context.fillStyle = 'purple';
+    //       context.fill();
+    //       const imageData = context.getImageData(0, 0, 16, 16);
+    //       chrome.action.setIcon({imageData: imageData}, () => { /* ... */ });
+    //     }
+    //   }
+
+    //   function update(){
+    //     context?.clearRect(0, 0, offCanvas.width, offCanvas.height);
+    //     drawCircle();
+
+    //     // change position
+    //     if(circle.x > 15){
+    //       forward = false;
+    //     }
+
+    //     if(circle.x <= 0){
+    //       forward = true;
+    //     }
+
+    //     if(forward){
+    //       circle.x += circle.dx;
+    //     }else{
+    //       circle.x -= circle.dx;
+    //     }
+
+    //     requestAnimationFrame(update);
+    //     console.log(circle.x, forward);
+    //   }
+    //   update();
+    // }
+  }
+
   // using inline styles for simplicity to get results
   return (
     <div
@@ -96,6 +146,14 @@ export function LoginForm() {
           Login
         </button>
       )}
+      <button
+        onClick={handleChangeIcon}
+        style={{
+          width: 100
+        }}
+      >
+        Change Icon
+      </button>
     </div>
   )
 }
