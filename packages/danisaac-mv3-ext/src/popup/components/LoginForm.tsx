@@ -67,6 +67,7 @@ export function LoginForm() {
     const offCanvas = document.createElement('canvas')
     // const canvas = new OffscreenCanvas(16, 16);
     const context = offCanvas.getContext('2d')
+    // messy code for trying things out, commited to avoid commit errors :)
     // if(context){
     //   const circle = {
     //     x: 10,
