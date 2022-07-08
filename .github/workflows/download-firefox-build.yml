@@ -1,0 +1,21 @@
+name: Download Firefox Source Code
+
+on:
+  push:
+    branches: [ github-action ]
+
+jobs:
+       
+  archive-build-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run the zip script
+        run: sh ../../packages/coil-extension/build.sh prod firefox
+    
+      - name: Step 3 - Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with: 
+          name: coil-extension-firefox
+          path: ../../packages/coil-extension/dist
