@@ -1,12 +1,12 @@
-name: Download Firefox Source Code
+name: Download Extension Source Code
 
 on:
   push:
-    branches: [ github-action ]
+    tags:
+      - coil-extension@*
 
 jobs:
-       
-  archive-build-artifacts:
+  save-firefox-source-code:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -14,11 +14,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run the zip script
+      - name: Step 1 - Package the extension for firefox
         run: sh ./package.sh firefox
     
-      - name: Step 3 - Use the Upload Artifact GitHub Action
+      - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension source code
         uses: actions/upload-artifact@v2
         with: 
           name: coil-extension-firefox
-          path: ${{ github.workspace }}/packages/coil-extension/dist
+          path: dist
+
+  save-chrome-source-code:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/packages/coil-extension
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Step 1 - Package the extension for chrome
+        run: sh ./package.sh chrome
+    
+      - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension source code
+        uses: actions/upload-artifact@v2
+        with: 
+          name: coil-extension-chrome
+          path: dist
