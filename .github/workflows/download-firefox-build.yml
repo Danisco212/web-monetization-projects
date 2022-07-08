@@ -12,11 +12,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Run the zip script
-        run: sh ${{ github.workspace }}/packages/coil-extension/build.sh prod firefox
-
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+        run: sh ${{ github.workspace }}packages/webexts-build-utils/scripts/package.sh prod firefox coilfirefoxextension@coil.com.xpi coil_extension.zip coil_extension_edge.zip
     
       - name: Step 3 - Use the Upload Artifact GitHub Action
         uses: actions/upload-artifact@v2
