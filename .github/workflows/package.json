@@ -1,5 +1,0 @@
-{
-    "scripts": {
-        "build-prod": "echo 'this is me'"
-    }
-}
