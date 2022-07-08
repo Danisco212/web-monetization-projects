@@ -22,4 +22,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: coil-extension-firefox
-          path: $HOME/runner/work/web-monetization-projects/web-monetization-projects/packages/coil-extension/assets
+          path: /runner/work/web-monetization-projects/web-monetization-projects/packages/coil-extension/assets
