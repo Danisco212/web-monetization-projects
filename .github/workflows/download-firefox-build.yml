@@ -2,8 +2,7 @@ name: Download Firefox Extension Source Code
 
 on:
   push:
-    tags:
-      - coil-extension@*
+    branches: [ github-actions ]
 
 jobs:
   save-firefox-source-code:
