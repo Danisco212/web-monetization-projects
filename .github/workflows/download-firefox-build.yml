@@ -20,4 +20,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: coil-extension-firefox
-          path: dist
+          path: ${{ github.workspace }}/packages/coil-extension/dist
