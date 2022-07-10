@@ -2,8 +2,7 @@ name: Download Chrome Extension Source Code
 
 on:
   push:
-    tags:
-      - coil-extension@*
+    branches: [ github-action ]
 
 jobs:
   save-chrome-source-code:
@@ -21,4 +20,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: coil-extension-chrome
-          path: dist
+          path: ${{ github.workspace }}/packages/coil-extension/dist
