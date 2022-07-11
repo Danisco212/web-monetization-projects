@@ -48,5 +48,5 @@ jobs:
       - name: Step 1 - Use the Upload Artifact GitHub Action to upload the extension source code
         uses: actions/upload-artifact@v2
         with: 
-          name: coil-extension-chrome
+          name: coil-extension
           path: ${{ github.workspace }}
