@@ -22,26 +22,34 @@ jobs:
 
   save-chrome-source-code:
     runs-on: ubuntu-latest
+    needs: [ save-mono-repo-source-code ]
     defaults:
       run:
         working-directory: ${{ github.workspace }}/packages/coil-extension
     steps:
       - uses: actions/checkout@v3
 
-      - name: Show all files in workspace
-        run: ls ${{ github.workspace }}
-
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      # - name: Step 1 - Package the extension for chrome
-      #   run: sh ./package.sh chrome
+      - name: download the artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: source-${{env.RELEASE_VERSION}}
+
+      - name: Step 1 - list contents
+        run: echo {{ github.workspace }}/packages/coil-extension
+
+      - name: Step 2 - Package the extension for chrome
+        run: |
+          cd source-${{env.RELEASE_VERSION}}
+          sh ./package.sh chrome
     
-      # - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension source code
-      #   uses: actions/upload-artifact@v2
-      #   with: 
-      #     name: chrome-${{env.RELEASE_VERSION}}
-      #     path: ${{ github.workspace }}/packages/coil-extension/dist
+      - name: Step 3 - Use the Upload Artifact GitHub Action to upload the extension source code
+        uses: actions/upload-artifact@v2
+        with: 
+          name: chrome-${{env.RELEASE_VERSION}}
+          path: ${{ github.workspace }}/packages/coil-extension/dist
           
   save-firefox-source-code:
     runs-on: ubuntu-latest
