@@ -44,11 +44,8 @@ jobs:
    
     steps:
       - uses: actions/checkout@v3
-
-      - name: Step 1 - Package the extension for chrome
-        run: sh ./package.sh chrome
     
-      - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension source code
+      - name: Step 1 - Use the Upload Artifact GitHub Action to upload the extension source code
         uses: actions/upload-artifact@v2
         with: 
           name: coil-extension-chrome
