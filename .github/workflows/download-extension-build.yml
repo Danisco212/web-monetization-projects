@@ -37,7 +37,7 @@ jobs:
           name: source-${{env.RELEASE_VERSION}}
 
       - name: Step 1 - list contents
-        run: echo {{ github.workspace }}/packages/coil-extension
+        run: ls {{ github.workspace }}/packages/coil-extension
 
       - name: Step 2 - Package the extension for chrome
         run: |
