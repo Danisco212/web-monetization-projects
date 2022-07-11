@@ -56,7 +56,7 @@ jobs:
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     
       - name: Grant permissions
-        run: sh ./grantPermissions.sh
+        run: sh ${{ github.workspace }}/.github/workflows/grantPermissions.sh
 
       - name: Step 1 - Use the Upload Artifact GitHub Action to upload the extension source code
         uses: actions/upload-artifact@v2
