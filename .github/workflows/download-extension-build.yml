@@ -23,7 +23,7 @@ jobs:
       - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension source code
         uses: actions/upload-artifact@v2
         with: 
-          name: coil-extension-chrome-${{env.RELEASE_VERSION}}
+          name: chrome-${{env.RELEASE_VERSION}}
           path: ${{ github.workspace }}/packages/coil-extension/dist
           
   save-firefox-source-code:
@@ -40,7 +40,7 @@ jobs:
       - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension source code
         uses: actions/upload-artifact@v2
         with: 
-          name: coil-extension-firefox
+          name: firefox-${{env.RELEASE_VERSION}}
           path: ${{ github.workspace }}/packages/coil-extension/dist
 
   save-mono-repo-source-code:
@@ -52,5 +52,5 @@ jobs:
       - name: Step 1 - Use the Upload Artifact GitHub Action to upload the extension source code
         uses: actions/upload-artifact@v2
         with: 
-          name: coil-extension
+          name: source-${{env.RELEASE_VERSION}}
           path: ${{ github.workspace }}
