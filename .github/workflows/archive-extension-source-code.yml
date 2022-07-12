@@ -38,7 +38,7 @@ jobs:
       - name: Step 1 - Package the extension for chrome
         run: |
           ls ${{ github.workspace }}
-          tar -xvf web-monetization-projects.tar
+          tar -xf web-monetization-projects.tar
           ${{ github.workspace }}/packages/coil-extension/package.sh chrome
         shell: bash
     
