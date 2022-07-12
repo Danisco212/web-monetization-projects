@@ -37,9 +37,9 @@ jobs:
 
       - name: Step 1 - Package the extension for chrome
         run: |
-          ls ${{ github.workspace }}
           tar -xf web-monetization-projects.tar
-          ${{ github.workspace }}/packages/coil-extension/package.sh chrome
+          ls ${{ github.workspace }}
+          sh ${{ github.workspace }}/packages/coil-extension/package.sh chrome
         shell: bash
     
       - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension build
