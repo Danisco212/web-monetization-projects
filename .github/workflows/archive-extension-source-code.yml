@@ -39,8 +39,8 @@ jobs:
         run: |
           ls ${{ github.workspace }}
           tar -xf my_repo.tar
-          ls ${{ github.workspace }}
-          sh ${{ github.workspace }}/packages/coil-extension/package.sh chrome
+          ls ${{ github.workspace }}/${{ github.workspace }}
+          sh ${{ github.workspace }}/${{ github.workspace }}/packages/coil-extension/package.sh chrome
         shell: bash
     
       - name: Step 2 - Use the Upload Artifact GitHub Action to upload the extension build
