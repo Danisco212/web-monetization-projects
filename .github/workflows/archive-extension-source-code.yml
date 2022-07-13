@@ -2,7 +2,8 @@ name: Archive Extension Build And Source Code
 
 on:
   push:
-    branches: [ github-workflows ]
+    tags:
+      - coil-extension@*
 
 jobs:
   save-monorepo-source-code:
@@ -36,9 +37,7 @@ jobs:
           name: source-${{env.RELEASE_VERSION}}
 
       - name: Step 1 - Extract tar archive
-        run: |
-          ls ${{ github.workspace }}
-          tar -xf mono_repo.tar
+        run: tar -xf mono_repo.tar
 
       - name: Step 2 - Package the extension for chrome
         run: ./package.sh chrome  
@@ -63,9 +62,7 @@ jobs:
           name: source-${{env.RELEASE_VERSION}}
 
       - name: Step 1 - Extract tar archive
-        run: |
-          ls ${{ github.workspace }}
-          tar -xf mono_repo.tar
+        run: tar -xf mono_repo.tar
 
       - name: Step 2 - Package the extension for firefox
         run: ./package.sh firefox  
@@ -75,6 +72,6 @@ jobs:
       - name: Step 3 - Use the Upload Artifact GitHub Action to upload the extension build
         uses: actions/upload-artifact@v3
         with: 
-          name: chrome-${{env.RELEASE_VERSION}}
+          name: firefox-${{env.RELEASE_VERSION}}
           path: ${{ github.workspace }}/${{ github.workspace }}/packages/coil-extension/dist
 
