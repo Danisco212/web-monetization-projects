@@ -1,37 +1,54 @@
 import { PaymentDetails } from '@webmonetization/polyfill-utils'
 import { MonetizationState } from '@webmonetization/types'
+import { StoreValue } from '@webmonetization/wext/services'
 
-import {
-  PlayOrPauseState,
-  StickyState,
-  ToggleControlsAction
-} from './streamControls'
 import { FrameSpec } from './FrameSpec'
 
 /**
  * browser.runtime.sendMessage
  */
-export interface LocalStorageUpdate extends Command {
-  command: 'localStorageUpdate'
-  key: string
-}
-
-export interface Command<T = any> {
-  command: string
-  data?: T
+export interface StoreUpdate extends Command {
+  command: 'storeUpdate'
+  data: {
+    key: string
+    value: StoreValue | null
+  }
 }
 
 /**
  * popup -> background
  * browser.runtime.sendMessage
  */
-export interface SetStreamControls extends Command {
-  command: 'setStreamControls'
+export interface StoreGetItems extends Command {
+  command: 'storeGetItems'
+}
+
+/**
+ * popup -> background
+ * browser.runtime.sendMessage
+ */
+export interface StoreSetItem extends Command {
+  command: 'storeSetItem'
   data: {
-    sticky: StickyState
-    play: PlayOrPauseState
-    action: ToggleControlsAction
+    key: string
+    value: StoreValue
   }
+}
+
+/**
+ * popup -> background
+ * browser.runtime.sendMessage
+ */
+export interface StoreRemoveItem extends Command {
+  command: 'storeRemoveItem'
+  data: {
+    key: string
+  }
+}
+
+export interface Command<T = any> {
+  command: string
+  data?: T
 }
 
 /**
@@ -48,6 +65,9 @@ export interface Logout extends Command {
  */
 export interface ContentScriptInit extends Command {
   command: 'contentScriptInit'
+  data: {
+    origin: string
+  }
 }
 
 /**
@@ -66,7 +86,7 @@ export interface AdaptedPageDetails extends Command {
 export interface PauseWebMonetization extends Command {
   command: 'pauseWebMonetization'
   data: {
-    requestId?: string
+    requestIds: string[]
   }
 }
 
@@ -77,7 +97,7 @@ export interface PauseWebMonetization extends Command {
 export interface ResumeWebMonetization extends Command {
   command: 'resumeWebMonetization'
   data: {
-    requestId?: string
+    requestIds: string[]
   }
 }
 
@@ -179,7 +199,6 @@ export type ToBackgroundMessage =
   | PauseWebMonetization
   | ResumeWebMonetization
   | StopWebMonetization
-  | SetStreamControls
   | LogCommand
   | Logout
   | AdaptedSite
@@ -198,6 +217,9 @@ export type ToBackgroundMessage =
   | ReportCorrelationIdFromIFrameContentScript
   | OnFrameAllowedChanged
   | AdaptedPageDetails
+  | StoreGetItems
+  | StoreSetItem
+  | StoreRemoveItem
 
 export type IconState =
   | 'streaming-paused'
@@ -438,6 +460,19 @@ export interface LogInActiveTab {
   }
 }
 
+/**
+ *  background -> content
+ *  browser.tabs.sendMessage
+ */
+export interface SPSPRequestEvent {
+  command: 'spspRequestEvent'
+  data: {
+    requestId: string
+    event: 'load' | 'error' | 'abort' | 'loadstart' | 'not-found'
+    message?: string
+  }
+}
+
 export type ToContentMessage =
   | CheckAdaptedContent
   | MonetizationProgress
@@ -449,5 +484,6 @@ export type ToContentMessage =
   | TipSent
   | ClearToken
   | LogInActiveTab
+  | SPSPRequestEvent
 
-export type ToPopupMessage = LocalStorageUpdate | ClosePopup
+export type ToPopupMessage = StoreUpdate | ClosePopup

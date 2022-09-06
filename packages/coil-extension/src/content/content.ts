@@ -4,18 +4,23 @@ import { Container } from 'inversify'
 import { GraphQlClientOptions } from '@coil/client'
 import { inversifyModule } from '@dier-makr/inversify'
 import { GlobalModule } from '@dier-makr/annotations'
+import { wmPolyfill } from '@webmonetization/wext/content'
 
 import * as tokens from '../types/tokens'
-import { API, COIL_DOMAIN } from '../webpackDefines'
+import { API, BUILD_CONFIG, COIL_DOMAIN } from '../webpackDefines'
 import { ClientOptions } from '../services/ClientOptions'
-import { loggingEnabled } from '../util/isLoggingEnabled'
+import { isLoggingEnabled } from '../util/isLoggingEnabled'
 
 import { ContentScript } from './services/ContentScript'
 
-function configureContainer(container: Container) {
-  container.bind(tokens.LoggingEnabled).toConstantValue(loggingEnabled)
+async function configureContainer(container: Container) {
+  container.bind(tokens.LoggingEnabled).toDynamicValue(async () => {
+    return isLoggingEnabled(BUILD_CONFIG)
+  })
+  container.bind(tokens.BuildConfig).toConstantValue(BUILD_CONFIG)
   container.bind(tokens.ContentRuntime).toConstantValue(API.runtime)
   container.bind(tokens.CoilDomain).toConstantValue(COIL_DOMAIN)
+  container.bind(tokens.PolyfillCode).toConstantValue(wmPolyfill)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const noop = (..._: unknown[]) => undefined
   container
@@ -28,13 +33,16 @@ function configureContainer(container: Container) {
   container.bind(Document).toConstantValue(document)
 }
 
-function main() {
+async function main() {
   const container = new Container({
     defaultScope: 'Singleton',
     autoBindInjectable: true
   })
   inversifyModule(GlobalModule)
-  configureContainer(container)
-  container.get(ContentScript).init()
+  await configureContainer(container)
+  const contentScript = await container.getAsync(ContentScript)
+  contentScript.init()
 }
-main()
+
+// eslint-disable-next-line no-console
+main().catch(console.error)

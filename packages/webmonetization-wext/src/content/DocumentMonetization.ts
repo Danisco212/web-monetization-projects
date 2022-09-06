@@ -6,11 +6,14 @@ import {
   MonetizationStopEvent,
   TipEvent
 } from '@webmonetization/types'
-import { injectable } from '@dier-makr/annotations'
+import { inject, injectable } from '@dier-makr/annotations'
 import { PaymentDetails } from '@webmonetization/polyfill-utils'
 
+import * as tokens from '../tokens'
+
 import { ScriptInjection } from './ScriptInjection'
-import { includePolyFillMessage, wmPolyfill } from './wmPolyfill'
+import { includePolyFillMessage } from './wmPolyfill'
+import { mozClone } from './mozClone'
 
 interface SetStateParams {
   state: MonetizationState
@@ -23,29 +26,24 @@ type MonetizationRequest = PaymentDetails
 // Name of event dispatched on document
 const MONETIZATION_DOCUMENT_EVENT_NAME = 'monetization-v1'
 
-type DefaultView = WindowProxy & typeof globalThis
-type CloneInto = (obj: unknown, window: DefaultView | null) => typeof obj
-declare const cloneInto: CloneInto | undefined
-
-let cloneIntoRef: CloneInto | undefined
-try {
-  cloneIntoRef = cloneInto
-} catch (e) {
-  cloneIntoRef = undefined
-}
-
 @injectable()
 export class DocumentMonetization {
   private finalized = true
   private state: MonetizationState = 'stopped'
   private request?: MonetizationRequest
 
-  constructor(private doc: Document, private scripts: ScriptInjection) {}
+  constructor(
+    private doc: Document,
+    private scripts: ScriptInjection,
+    @inject(tokens.PolyfillCode)
+    private polyfillCode: string
+  ) {}
 
-  injectDocumentMonetization() {
+  injectMonetizationPolyfill() {
     try {
-      this.scripts.inject(wmPolyfill)
+      this.scripts.injectCode(this.polyfillCode)
     } catch (e) {
+      console.error(e)
       console.warn(includePolyFillMessage)
     }
   }
@@ -118,7 +116,7 @@ export class DocumentMonetization {
     }
     this.doc.dispatchEvent(
       new CustomEvent(MONETIZATION_DOCUMENT_EVENT_NAME, {
-        detail: cloneIntoRef ? cloneIntoRef(obj, this.doc.defaultView) : obj
+        detail: mozClone(obj, this.doc)
       })
     )
   }
@@ -127,7 +125,10 @@ export class DocumentMonetization {
     detail: MonetizationStartEvent['detail']
   ) {
     // Indicate that payment has started.
-    const changed = this.setState({ state: 'started' })
+    const changed = this.setState({
+      state: 'started',
+      requestId: detail.requestId
+    })
     if (!changed) {
       throw new Error(`expecting state transition`)
     }

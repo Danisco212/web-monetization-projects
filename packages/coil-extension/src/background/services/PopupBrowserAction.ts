@@ -7,7 +7,7 @@ import { BuildConfig } from '../../types/BuildConfig'
 import { TabOpener } from './TabOpener'
 import { PopupIconService } from './PopupIconService'
 
-import TabIconDetails = chrome.browserAction.TabIconDetails
+type TabIconDetails = chrome.browserAction.TabIconDetails
 
 type Action = (tab: chrome.tabs.Tab) => void
 
@@ -28,8 +28,9 @@ export class PopupBrowserAction {
     private icons: PopupIconService,
     @inject(tokens.BuildConfig)
     private buildConfig: BuildConfig,
+    @inject(tokens.UserAgent) private userAgent: string,
     @inject(tokens.CoilDomain) private coilDomain: string,
-    @inject(tokens.WextApi) private api = chrome
+    @inject(tokens.WextApi) private api: typeof chrome
   ) {
     this.openLogin = this.tabOpener.opener(`${this.coilDomain}/login`)
     // disable popup if on android
@@ -41,8 +42,11 @@ export class PopupBrowserAction {
           }
         }
 
-        if (result?.os === 'android') {
-          this.api.browserAction.setPopup({
+        if (
+          result?.os === 'android' &&
+          !this.userAgent.includes('SamsungBrowser')
+        ) {
+          this.actionApi().setPopup({
             // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1426484
             // Setting the popup to empty string which should allow onClicked
             // handlers to work is buggy on android firefox.
@@ -66,10 +70,8 @@ export class PopupBrowserAction {
       return
     }
     this.clearAction()
-    const api = this.api
-
-    api.browserAction.setPopup({
-      popup: api.runtime.getURL('/static/popup.html')
+    this.actionApi().setPopup({
+      popup: this.api.runtime.getURL('/static/popup.html')
     })
     this.disabled = false
   }
@@ -83,8 +85,9 @@ export class PopupBrowserAction {
   }
 
   setDefaultInactive() {
-    if (this.api.browserAction) {
-      this.api.browserAction.setIcon({
+    const actionApi = this.actionApi()
+    if (actionApi) {
+      actionApi.setIcon({
         path: this.icons.forTabState({ iconPrimary: 'inactive' })
       })
       const now = new Date()
@@ -99,10 +102,9 @@ export class PopupBrowserAction {
   }
 
   setBrowserAction(tabId: number, state: TabState) {
-    // In some strange cases on android these are not set
-    const api = this.api
+    const actionApi = this.actionApi()
 
-    if (api.browserAction.setIcon) {
+    if (actionApi.setIcon) {
       const path = this.icons.forTabState(state)
       const args = {
         tabId,
@@ -121,7 +123,7 @@ export class PopupBrowserAction {
       // network tab of devtools isn't littered with (*unworkable* amounts of)
       // related entries.
       if (changed || this.lastSetIconCallArgs.calls <= 10) {
-        api.browserAction.setIcon(args)
+        actionApi.setIcon(args)
         // We must ++prefix increment because we are copying
         this.lastSetIconCallArgs = {
           ...args,
@@ -133,17 +135,23 @@ export class PopupBrowserAction {
 
   private setAction(action: Action) {
     this.clearAction()
-    const api = this.api
-    api.browserAction.setPopup({
+    const actionApi = this.actionApi()
+
+    actionApi.setPopup({
       popup: ''
     })
-    api.browserAction.onClicked.addListener(action)
+    actionApi.onClicked.addListener(action)
     this.action = action
+  }
+
+  private actionApi() {
+    const api = this.api
+    return api.browserAction ?? api.action
   }
 
   private clearAction() {
     if (this.action) {
-      this.api.browserAction.onClicked.removeListener(this.action)
+      this.actionApi().onClicked.removeListener(this.action)
     }
   }
 }

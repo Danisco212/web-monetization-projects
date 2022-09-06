@@ -1,79 +1,90 @@
 import '@abraham/reflection'
 import { Container } from 'inversify'
-import { GraphQlClient } from '@coil/client'
-import { makeLoggerMiddleware } from 'inversify-logger-middleware'
+import { TokenStore } from '@coil/anonymous-tokens'
 
 import { API, BUILD_CONFIG, COIL_DOMAIN, VERSION } from '../webpackDefines'
-import { StorageService } from '../services/storage'
+import { decorateThirdPartyClassesForInjection } from '../services/decorateThirdPartyClassesForInjection'
+import { isLoggingEnabled } from '../util/isLoggingEnabled'
 import * as tokens from '../types/tokens'
-import { ClientOptions } from '../services/ClientOptions'
-import { decorateThirdPartyClasses } from '../services/decorateThirdPartyClasses'
-import { loggingEnabled } from '../util/isLoggingEnabled'
+import { StoreProxy } from '../types/storage'
 
 import { BackgroundScript } from './services/BackgroundScript'
-import { BackgroundStorageService } from './services/BackgroundStorageService'
-import { Stream } from './services/Stream'
-import { createLogger } from './services/utils'
+import { BackgroundStoreService } from './services/BackgroundStoreService'
+import { BackgroundEvents } from './services/BackgroundEvents'
+import { configureContainer } from './di/configureContainer'
 
-async function configureContainer(container: Container) {
+/**
+ * We patch the window/self object so can access objects and utils from the
+ * devtools console.
+ */
+interface Environment {
+  bg?: BackgroundScript
+  store?: StoreProxy
+  clearTokens?: () => void
+  clearPopupRouteState?: () => void
+}
+
+async function main(env: Environment) {
+  // In MV3, event listeners should be bound at the top level.
+  // Do this before async BackgroundScript object graph creation.
+  const topLevelListeners = new BackgroundEvents(API)
+  topLevelListeners.bindBufferingListeners()
+
+  const loggingEnabled = await isLoggingEnabled(BUILD_CONFIG)
   if (loggingEnabled) {
-    const logger = makeLoggerMiddleware()
-    container.applyMiddleware(logger)
-  }
-
-  container.bind(tokens.CoilDomain).toConstantValue(COIL_DOMAIN)
-  container.bind(tokens.WextApi).toConstantValue(API)
-  container.bind(tokens.BuildConfig).toConstantValue(BUILD_CONFIG)
-  container.bind(tokens.LoggingEnabled).toConstantValue(loggingEnabled)
-  container.bind(GraphQlClient.Options).to(ClientOptions)
-  container.bind(Storage).toConstantValue(localStorage)
-  container.bind(StorageService).to(BackgroundStorageService)
-  container.bind(Container).toConstantValue(container)
-
-  container.bind(Stream).toSelf().inTransientScope()
-
-  container
-    .bind(tokens.NoContextLoggerName)
-    .toConstantValue('tokens.NoContextLoggerName')
-
-  container.bind(tokens.Logger).toDynamicValue(createLogger).inTransientScope()
-
-  container.bind(tokens.LocalStorageProxy).toDynamicValue(context => {
-    return context.container.get(StorageService).makeProxy(['token'])
-  })
-}
-
-declare global {
-  interface Window {
-    bg: BackgroundScript
-    clearTokens: () => void
-  }
-}
-
-window.clearTokens = function clearTokens() {
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i)
-    if (key?.startsWith('anonymous_token:')) {
-      console.log('deleting', key)
-      localStorage.removeItem(key)
-    }
-  }
-}
-
-async function main() {
-  if (loggingEnabled) {
+    // eslint-disable-next-line no-console
     console.log('Loading Coil extension:', JSON.stringify(VERSION))
   }
-  decorateThirdPartyClasses()
+  decorateThirdPartyClassesForInjection()
 
   const container = new Container({
     defaultScope: 'Singleton',
     autoBindInjectable: true
   })
 
-  await configureContainer(container)
-  window.bg = container.get(BackgroundScript)
-  void window.bg.run()
+  await configureContainer({
+    container: container,
+    loggingEnabled,
+    coilDomain: COIL_DOMAIN,
+    wextApi: API,
+    buildConfig: BUILD_CONFIG,
+    getActiveTab: async () => {
+      // This query will not pick up dev tools tabs which may be currently
+      // active, so we need to query for other active tabs in that case
+      // and select the first.
+      // It's possible that this may also result in an empty response set,
+      // however hopefully this state will be very transient.
+      for (const currentWindow of [true, false]) {
+        const tabs = await new Promise<chrome.tabs.Tab[]>(resolve => {
+          chrome.tabs.query({ active: true, currentWindow }, tabs => {
+            resolve(tabs)
+          })
+        })
+        if (tabs.length) {
+          return tabs[0].id
+        }
+      }
+    }
+  })
+
+  env.bg = await container.getAsync(BackgroundScript)
+  env.store = await container.getAsync(tokens.StoreProxy)
+  env.clearTokens = () => {
+    const store = container.get<TokenStore>(tokens.TokenStore)
+    store.clear()
+  }
+  env.clearPopupRouteState = async () => {
+    const service = await container.getAsync(BackgroundStoreService)
+    const keys = service.keys()
+    for (const key of keys) {
+      if (key.startsWith('popup-route:')) {
+        service.remove(key)
+      }
+    }
+  }
+  // noinspection ES6MissingAwait
+  void env.bg.run()
 }
 
-main().catch(console.error)
+// eslint-disable-next-line no-console
+main(self as Environment).catch(console.error)

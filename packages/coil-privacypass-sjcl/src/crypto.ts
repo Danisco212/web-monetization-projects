@@ -3,6 +3,7 @@
  * [ Adapted from the original by Coil for use in Typescript ]
  * https://github.com/privacypass/challenge-bypass-extension/blob/master/src/crypto/local.js
  */
+
 import sjcl from 'sjcl'
 import keccak, { Shake } from 'keccak'
 import { ASN1, PEM } from 'asn1-parser'
@@ -11,9 +12,18 @@ import { h2Curve } from './hashToCurve'
 import { H2CParams } from './config'
 import { BlindToken } from './tokens'
 import { Commitment, SjclHashable } from './interfaces'
+import { asciiToBin } from './base64'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const atob: (s: string) => string = require('atob')
+if (typeof window === 'undefined' && self?.crypto) {
+  // Seed inside a worker
+  const ab = new Uint32Array(32)
+  self.crypto.getRandomValues(ab)
+  sjcl.random.addEntropy(
+    ab as unknown as number[],
+    1024,
+    'crypto.getRandomValues'
+  )
+}
 
 export interface CurvePoints {
   points: sjcl.SjclEllipticalPoint[]
@@ -661,7 +671,7 @@ export function evaluateHkdf(
 export function retrieveProof(bp: { P: string }) {
   let dleqProof
   try {
-    dleqProof = parseDleqProof(atob(bp.P))
+    dleqProof = parseDleqProof(asciiToBin(bp.P))
   } catch (e) {
     console.error(`${PARSE_ERR}: ${e}`)
     return
@@ -675,7 +685,7 @@ export function retrieveProof(bp: { P: string }) {
  * @return {Object} JSON batched DLEQ proof
  */
 export function getMarshaledBatchProof(proof: string) {
-  let proofStr = atob(proof)
+  let proofStr = asciiToBin(proof)
   if (proofStr.indexOf(BATCH_PROOF_PREFIX) === 0) {
     proofStr = proofStr.substring(BATCH_PROOF_PREFIX.length)
   }

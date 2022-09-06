@@ -1,4 +1,53 @@
+- <a name="coil-extension@0.0.59"></a>
+
+# [coil-extension@0.0.60](https://github.com/coilhq/web-monetization-projects/compare/coil-extension@0.0.59...coil-extension@0.0.60) (2021-08-11)
+
+### New Features
+
+- Add implementation of WM2
+  - [#2424](https://github.com/coilhq/web-monetization-projects/pull/2424)
+  - [#3102](https://github.com/coilhq/web-monetization-projects/pull/3102)
+  - [#3139](https://github.com/coilhq/web-monetization-projects/pull/3139)
+- Add initial support for MV3
+  - [#3048](https://github.com/coilhq/web-monetization-projects/pull/3048)
+  - [#3059](https://github.com/coilhq/web-monetization-projects/pull/3059)
+  - [#3057](https://github.com/coilhq/web-monetization-projects/pull/3057)
+  - [#3070](https://github.com/coilhq/web-monetization-projects/pull/3070)
+  - [#3072](https://github.com/coilhq/web-monetization-projects/pull/3072)
+  - [#3080](https://github.com/coilhq/web-monetization-projects/pull/3080)
+  - [#3086](https://github.com/coilhq/web-monetization-projects/pull/3086)
+  - [#3113](https://github.com/coilhq/web-monetization-projects/pull/3113)
+  - [#3116](https://github.com/coilhq/web-monetization-projects/pull/3116)
+  - [#3126](https://github.com/coilhq/web-monetization-projects/pull/3126)
+  - [#3127](https://github.com/coilhq/web-monetization-projects/pull/3127)
+  - [#3154](https://github.com/coilhq/web-monetization-projects/pull/3154)
+  - [#3168](https://github.com/coilhq/web-monetization-projects/pull/3168)
+  - [#3170](https://github.com/coilhq/web-monetization-projects/pull/3170)
+
+### Fixes
+
+- Support building without git folder [#3117](https://github.com/coilhq/web-monetization-projects/pull/3117) [#3128](https://github.com/coilhq/web-monetization-projects/pull/3128)
+- Revert workarounds for early buggy versions of Safari [#3075](https://github.com/coilhq/web-monetization-projects/pull/3075)
+- Don't open coil.com/settings for popup on Samsung Internet [#2858](<(https://github.com/coilhq/web-monetization-projects/pull/2858)>)
+- Remove old stream controls UI code [#3068](https://github.com/coilhq/web-monetization-projects/pull/3068)
+- Show popup last view if tipping shown [#3082](https://github.com/coilhq/web-monetization-projects/pull/3082)
+- Don't use localStorage directly [#2864](https://github.com/coilhq/web-monetization-projects/pull/2864)
+
+- <a name="coil-extension@0.0.59"></a>
+
+# [coil-extension@0.0.59](https://github.com/coilhq/web-monetization-projects/compare/coil-extension@0.0.58...coil-extension@0.0.59) (2021-05-09)
+
+### New Features
+
+- Set default view to tipping where enabled [#2717](https://github.com/coilhq/web-monetization-projects/pull/2717) [#2836](https://github.com/coilhq/web-monetization-projects/pull/2836)
+- Keyboard accessible tipping buttons [#2652](https://github.com/coilhq/web-monetization-projects/pull/2652)
+
 - <a name="coil-extension@0.0.58"></a>
+
+### Fixes
+
+- Use tabs permission on Firefox to fix logout issues [#2679](https://github.com/coilhq/web-monetization-projects/pull/2679)
+- Omit Cookies at source as well as CF from anon tokens requests [#2814](https://github.com/coilhq/web-monetization-projects/pull/2814)[#2842](https://github.com/coilhq/web-monetization-projects/pull/2842)
 
 # [coil-extension@0.0.58](https://github.com/coilhq/web-monetization-projects/compare/coil-extension@0.0.57...coil-extension@0.0.58) (2021-02-25)
 

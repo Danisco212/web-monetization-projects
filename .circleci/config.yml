@@ -4,7 +4,7 @@ parameters:
   coil_domain:
     type: enum
     default: "https://coil.com"
-    enum: ["https://coil.com", "https://staging.coil.com"]
+    enum: [ "https://coil.com", "https://staging.coil.com" ]
 
 commands:
   gcloud-get-creds:
@@ -34,11 +34,11 @@ references:
   node-version-matrix: &node-version-matrix
     matrix:
       parameters:
-        node-version: [ "16.14.2", "18.0.0" ]
+        node-version: &node-versions [ "16.17.0", "18.4.0" ]
   just-one-node-version-matrix: &just-latest-lts-node-version
     matrix:
       parameters:
-        node-version: [ "16.14.2" ]
+        node-version: [ "16.17.0" ]
 
 jobs:
   # Run Linting
@@ -48,10 +48,10 @@ jobs:
       - checkout
       # Download and cache dependencies
       - &restore_cache
-#        run:
-#         name: Restore Cache Dummy
-#         command: |
-#           echo Restore Cache Dummy!
+        #        run:
+        #         name: Restore Cache Dummy
+        #         command: |
+        #           echo Restore Cache Dummy!
         restore_cache:
           keys:
             - v5-dependencies-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
@@ -70,10 +70,33 @@ jobs:
       - &save_cache
         save_cache:
           paths:
-          - node_modules
-          - .yarn
-          - pw-browsers
+            - node_modules
+            - .yarn
+            - pw-browsers
           key: v5-dependencies-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+
+  # Build Safari
+  build-safari:
+    macos:
+      xcode: 13.4.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - safari-build-dependencies-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+      - *yarn_install
+      - run:
+          name: Build Safari
+          command: |
+            cd packages/coil-extension
+            yarn build-prod chrome
+            scripts/build-safari.sh
+      - save_cache:
+          paths:
+            - node_modules
+            - .yarn
+            - pw-browsers
+          key: safari-build-dependencies-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
 
   coil-extension-package:
     <<: *parameterized-node-version
@@ -100,7 +123,8 @@ jobs:
 
   build-extension-e2e-coil:
     docker:
-      - image: cimg/node:16.15.0-browsers
+      # Hey renovate PR merger. Don't forget the node-version: [ "x.y.z", "y.z.x" ] blocks
+      - image: cimg/node:16.17.0-browsers
     steps:
       - gcloud-get-creds
       - checkout
@@ -155,7 +179,6 @@ jobs:
             yarn $build_cmd $BROWSER_TYPE
             xvfb-run -a ./test.sh test/puppeteer/logout-test.ts
             xvfb-run -a ./test.sh test/puppeteer/multiple-tags-test.ts
-     # Firefox puppeteer was not working at one point and it's on the TODO to reinstate
       # - run:
       #     name: BROWSER_TYPE=firefox test.sh test/puppeteer/logout-test.ts
       #     command: |
@@ -194,7 +217,6 @@ jobs:
             [[ $COIL_DOMAIN = "https://coil.com" ]] && build_cmd="build-prod" || build_cmd="build-staging"
             BUILD_TS=false TS_LOADER_TRANSPILE_ONLY=true yarn $build_cmd $BROWSER_TYPE
             xvfb-run -a ./test.sh test/puppeteer/logout-test.ts
-            xvfb-run -a ./test.sh test/puppeteer/multiple-tags-test.ts
 
       # - run:
       #     name: BROWSER_TYPE=firefox test.sh test/puppeteer/logout-test.ts
@@ -248,7 +270,7 @@ jobs:
     steps:
       - run:
           name: echo TESTING_ENV_VAR $TESTING_ENV_VAR should be masked
-          command: | 
+          command: |
             echo TESTING_ENV_VAR $TESTING_ENV_VAR
             # check the node version
             node --version
@@ -262,6 +284,13 @@ jobs:
             export TS_JEST_MAP_PATHS_TO_MODULES=true
             xvfb-run -a yarn << parameters.command >>
       - run:
+          name: Run jest via babel
+          command: |
+            export DEBUG='coil*'
+            export TS_JEST_MAP_PATHS_TO_MODULES=true
+            cp jest.config.local.example.js jest.config.local.js 
+            xvfb-run -a yarn << parameters.command >>
+      - run:
           name: Run jest from build
           command: |
             export DEBUG='coil*'
@@ -271,7 +300,7 @@ jobs:
             xvfb-run -a yarn << parameters.command >>
       - *save_cache
 
-  jest-lerna-all:
+  jest-workspaces-foreach-all:
     parameters:
       command:
         type: string
@@ -286,17 +315,17 @@ jobs:
       - *restore_cache
       - *yarn_install
       - run:
-          name: Lerna run jest via dynamic compilation
+          name: Yarn workspaces foreach run jest via dynamic compilation
           command: |
             export TS_JEST_MAP_PATHS_TO_MODULES=true
-            xvfb-run -a yarn lerna run --concurrency=2 --stream << parameters.command >>
+            xvfb-run -a yarn workspaces foreach -v --exclude=web-monetization run << parameters.command >>
       - run:
-          name: Lerna run jest from build
+          name: Yarn workspaces foreach run jest from build
           command: |
             yarn clean:build || echo "already clean"
             yarn build:ts:verbose
             export TS_JEST_MAP_PATHS_TO_MODULES=false
-            xvfb-run -a yarn lerna run --concurrency=2 --stream << parameters.command >>
+            xvfb-run -a yarn workspaces foreach -v --exclude=web-monetization run << parameters.command >>
       - *save_cache
 
   packages-build-scripts:
@@ -308,7 +337,7 @@ jobs:
       - run:
           name: Packages Build Scripts
           command: |
-            yarn lerna run --concurrency=1 --stream build
+            yarn workspaces foreach -v --exclude=web-monetization run build
       - *save_cache
 
   yarn-format-and-upkeep-diff-check:
@@ -344,6 +373,9 @@ workflows:
   version: 2
   build:
     jobs:
+      - build-safari
+#          requires:
+##            - lint-all
       - lint-all:
           <<: *node-version-matrix
       - yarn-format-and-upkeep-diff-check:
@@ -362,13 +394,13 @@ workflows:
             branches:
               only:
                 - main
-      - publish-packages:
-          requires:
-            - hold-publish-packages
-          filters:
-            branches:
-              only:
-                - main
+#      - publish-packages:
+#          requires:
+#            - hold-publish-packages
+#          filters:
+#            branches:
+#              only:
+#                - main
       - jest-all:
           context: web-monetization-tests
           filters:
@@ -377,10 +409,9 @@ workflows:
               ignore: /pull\/[0-9]+/
           matrix:
             parameters:
-              # TODO: DRY it up
-              node-version: [ "16.14.2", "18.0.0" ]
+              node-version: *node-versions
               command: [ "test:coverage", "test:e2e:coverage" ]
-      - jest-lerna-all:
+      - jest-workspaces-foreach-all:
           context: web-monetization-tests
           filters:
             branches:
@@ -388,7 +419,7 @@ workflows:
               ignore: /pull\/[0-9]+/
           matrix:
             parameters:
-              node-version: [ "16.14.2", "18.0.0" ]
+              node-version: *node-versions
               command: [ "test:coverage", "test:e2e:coverage" ]
       - coil-extension-puppeteer:
           context: web-monetization-tests
@@ -407,10 +438,10 @@ workflows:
       - build-extension-e2e-coil:
           requires:
             - jest-all
-            - jest-lerna-all
+            - jest-workspaces-foreach-all
             - coil-extension-puppeteer
             - coil-extension-puppeteer-transpile-only
-          filters:  # using regex filters requires the entire branch to match
+          filters: # using regex filters requires the entire branch to match
             branches:
-              only:  # only branches matching the below regex filters will run
+              only: # only branches matching the below regex filters will run
                 - main

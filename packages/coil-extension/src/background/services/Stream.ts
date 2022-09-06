@@ -16,12 +16,12 @@ import {
   SPSPError,
   SPSPResponse
 } from '@webmonetization/polyfill-utils'
-import { Container, inject, injectable } from 'inversify'
+import { Container, inject, injectable, optional } from 'inversify'
 import { BandwidthTiers } from '@coil/polyfill-utils'
 
 import { notNullOrUndef } from '../../util/nullables'
 import * as tokens from '../../types/tokens'
-import { BTP_ENDPOINT } from '../../webpackDefines'
+import { BuildConfig } from '../../types/BuildConfig'
 
 import { AnonymousTokens } from './AnonymousTokens'
 import { Logger, logger } from './utils'
@@ -73,6 +73,12 @@ type OnMoneyEvent = {
   receipt?: string
 }
 
+interface CreateStreamDetails extends PaymentDetails {
+  token: string
+  spspEndpoint: string
+  initiatingUrl: string
+}
+
 @injectable()
 export class Stream extends EventEmitter {
   private readonly _requestId: string
@@ -91,30 +97,28 @@ export class Stream extends EventEmitter {
   private _looping: boolean
   private _attempt: StreamAttempt | null
   private _coilDomain: string
-  private _anonTokens: AnonymousTokens
+  private _anonTokens: Pick<AnonymousTokens, 'getToken' | 'removeToken'>
 
   private _assetCode: string
   private _assetScale: number
   private _exchangeRate: number
 
   constructor(
+    @inject(tokens.BuildConfig)
+    private buildConfig: BuildConfig,
     @logger('Stream')
     private readonly _debug: Logger,
     private container: Container,
-    @inject(tokens.StreamDetails)
-    {
-      requestId,
-      spspEndpoint,
-      paymentPointer,
-      token,
-      initiatingUrl
-    }: PaymentDetails & {
-      token: string
-      spspEndpoint: string
-      initiatingUrl: string
-    }
+    @inject(tokens.CreateStreamDetails)
+    details: CreateStreamDetails,
+    @inject(tokens.BtpEndpoint)
+    @optional()
+    private btpEndpoint?: string
   ) {
     super()
+
+    const { requestId, spspEndpoint, paymentPointer, token, initiatingUrl } =
+      details
 
     this._paymentPointer = paymentPointer
     this._requestId = requestId
@@ -138,8 +142,8 @@ export class Stream extends EventEmitter {
     server.pathname = '/btp'
     this._server = server.href.replace(/^http/, 'btp+ws')
 
-    if (BTP_ENDPOINT) {
-      this._server = BTP_ENDPOINT
+    if (this.btpEndpoint) {
+      this._server = this.btpEndpoint
     }
   }
 
@@ -178,9 +182,10 @@ export class Stream extends EventEmitter {
       let btpToken: string | undefined
       let plugin, attempt
       try {
+        const spspDetailsPromise = await this._getSPSPDetails()
         btpToken = await this._anonTokens.getToken(this._authToken)
         plugin = await this._makePlugin(btpToken)
-        const spspDetails = await this._getSPSPDetails()
+        const spspDetails = await spspDetailsPromise
         this.container
           .rebind(tokens.NoContextLoggerName)
           .toConstantValue(`StreamAttempt:${this._requestId}:${++ATTEMPT}`)
@@ -237,15 +242,24 @@ export class Stream extends EventEmitter {
   }
 
   async _getSPSPDetails(): Promise<SPSPResponse> {
-    this._debug('fetching spsp details. url=', this._spspUrl)
+    const spspUrl = this.buildConfig.useLocalMockServer
+      ? // TODO
+        `http://localhost:4000/spsp/${encodeURIComponent(this._spspUrl)}`
+      : this._spspUrl
+
+    this._debug('fetching spsp details. url=', spspUrl)
     let details: SPSPResponse
     try {
-      details = await getSPSPResponse(this._spspUrl, this._requestId)
+      this.emit('spsp-event', 'loadstart', this._requestId)
+      details = await getSPSPResponse(spspUrl, this._requestId)
+      this.emit('spsp-event', 'load', this._requestId)
     } catch (e) {
       if (e instanceof SPSPError) {
         const status = e.response?.status
+        this.emit('spsp-event', 'error', this._requestId, e.message)
         // Abort on Bad Request 4XX
         if (!status || (status >= 400 && status < 500)) {
+          this.emit('spsp-event', 'abort', this._requestId)
           this.abort()
         }
       }

@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="./module.d.ts" />
+
 import * as fs from 'fs'
 import * as os from 'os'
 
@@ -43,12 +46,12 @@ export async function initBrowser({
   const headless1 = env.IS_CI ? false : env.HEADLESS
 
   const viewOptions = {
-    viewport: {
+    defaultViewport: {
       width: 750,
-      height: 1334
-    },
-    hasTouch: true,
-    isMobile: true
+      height: 1334,
+      hasTouch: true,
+      isMobile: true
+    }
   }
 
   if (browser === 'chrome') {

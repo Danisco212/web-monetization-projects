@@ -1,10 +1,8 @@
 import { BuildConfig } from '../types/BuildConfig'
-import { BUILD_CONFIG } from '../webpackDefines'
 
-export function isLoggingEnabled(buildConfig: BuildConfig) {
-  const enabled = Boolean(buildConfig.isLoggingEnabled)
-  const override = Boolean(localStorage.COIL_LOGGING_ENABLED)
-  return enabled || override
+export async function isLoggingEnabled(buildConfig: BuildConfig) {
+  // localStorage isn't available in MV3 service workers
+  // We will need to work out some other method for this
+  const mv2Enabling = self.localStorage?.COIL_LOGGING_ENABLED
+  return Boolean(buildConfig.loggingEnabled || mv2Enabling)
 }
-
-export const loggingEnabled = isLoggingEnabled(BUILD_CONFIG)

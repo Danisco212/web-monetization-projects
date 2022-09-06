@@ -15,7 +15,7 @@ import {
   StorableBlindToken,
   verifyProof
 } from '@coil/privacypass-sjcl'
-import { SjclEllipticalPoint } from 'sjcl'
+import type { SjclEllipticalPoint } from 'sjcl'
 
 import { portableFetch } from './portableFetch'
 
@@ -48,18 +48,12 @@ export interface Token {
   blindingFactor: string
 }
 
-// TODO: should these be allowed to be async?
-// TODO: went for localforage-like, could chang
 export interface TokenStore {
-  //getItem: (key: string) => Promise<string>
+  clear(): Promise<void>
   setItem: (key: string, value: string) => Promise<string>
   removeItem: (key: string) => Promise<void>
   iterate: (
-    fn: (
-      value: string,
-      key: string,
-      iterationNumber: number
-    ) => StorableBlindToken | undefined
+    fn: (key: string, value: string) => StorableBlindToken | undefined
   ) => Promise<StorableBlindToken | undefined>
 }
 
@@ -74,16 +68,40 @@ export interface AnonymousTokensOptions {
   batchSize: number
 }
 
-export class AnonymousTokens {
-  private redeemerUrl: string
-  private signerUrl: string
+export interface AnonymousTokensService {
+  /**
+   * Returns a BTP token
+   * @param coilAuthToken
+   */
+  getToken(coilAuthToken: string): Promise<string>
+
+  /**
+   * Called when the token has been exhausted
+   */
+  removeToken(btpToken: string): Promise<void>
+}
+
+export interface BTPTokenData {
+  userId: string // "anon:v/9Yq3ptxNJrxkwup6FjP3AL6Do8xGXPTeHa6tzhWas=",
+  throughput: number // 100000,
+  agg: number // 6000000,
+  currency: string // "USD",
+  scale: number // 9,
+  anon: boolean // true,
+  iat: number // 1652150952,
+  exp: number // 1652155152
+}
+
+export class AnonymousTokens implements AnonymousTokensService {
+  private readonly redeemerUrl: string
+  private readonly signerUrl: string
   private store: TokenStore
   // Maps btpToken => SignedToken.message
   private tokenMap: Map<string, string> = new Map()
-  private debug: typeof console.log
-  private batchSize: number
+  private readonly debug: typeof console.log
+  private readonly batchSize: number
 
-  private storedTokenCount: number
+  private storedTokenCount = 0
   private _populateTokensPromise: Promise<void> | null = null
 
   constructor({
@@ -98,22 +116,26 @@ export class AnonymousTokens {
     this.store = store
     this.debug = debug || function () {}
     this.batchSize = batchSize
-
-    let count = 0
-    this.store.iterate((_blob: string, name: string) => {
-      if (name.startsWith(TOKEN_PREFIX)) count++
-      return undefined
-    })
-    this.storedTokenCount = count
+    void this.getStoredTokenCount()
 
     // TODO: better config management
     initECSettings(h2cParams())
   }
 
+  private async getStoredTokenCount() {
+    let count = 0
+    await this.store.iterate((name: string) => {
+      if (name.startsWith(TOKEN_PREFIX)) count++
+      return undefined
+    })
+    this.storedTokenCount = count
+  }
+
   async getToken(coilAuthToken: string): Promise<string> {
     // When there is only 1 token left, fetch some more in the background.
     if (this.storedTokenCount === 1) {
-      this.populateTokens(coilAuthToken)
+      // noinspection ES6MissingAwait
+      void this.populateTokens(coilAuthToken)
     }
 
     // eslint-disable-next-line no-constant-condition
@@ -167,7 +189,7 @@ export class AnonymousTokens {
   }
 
   private async _getSignedToken(): Promise<StorableBlindToken | undefined> {
-    return this.store.iterate((blob: string, name: string) => {
+    return this.store.iterate((name: string, blob: string) => {
       if (name.startsWith(TOKEN_PREFIX)) {
         return JSON.parse(blob) as StorableBlindToken
       }
@@ -177,8 +199,9 @@ export class AnonymousTokens {
   async removeToken(btpToken: string): Promise<void> {
     const anonUserId = this.tokenMap.get(btpToken)
     this.tokenMap.delete(btpToken)
-    if (anonUserId) return this._removeSignedToken(anonUserId)
-    else return Promise.resolve()
+    if (anonUserId) {
+      return this._removeSignedToken(anonUserId)
+    }
   }
 
   private async _removeSignedToken(anonUserId: string): Promise<void> {
@@ -193,7 +216,10 @@ export class AnonymousTokens {
   ): Promise<IssueResponse> {
     const signRes = await portableFetch(this.signerUrl + '/issue', {
       method: 'POST',
-      credentials: 'omit',
+      // We need this for staging due to cloudflare auth
+      credentials: this.signerUrl.includes('staging.coil.com')
+        ? 'include'
+        : 'omit',
       headers: {
         authorization: `Bearer ${coilAuthToken}`,
         'content-type': 'application/json'
@@ -252,7 +278,7 @@ export class AnonymousTokens {
   ) {
     for (let i = 0; i < tokens.length; ++i) {
       const encoded = getTokenEncoding(tokens[i], signedPoints[i])
-      this.store.setItem(
+      void this.store.setItem(
         TOKEN_PREFIX + tokenName(tokens[i]),
         JSON.stringify(encoded)
       )
@@ -271,7 +297,7 @@ export class AnonymousTokens {
     return response.json()
   }
 
-  private async _verifyProof(
+  protected async _verifyProof(
     proof: string,
     prng: string,
     curvePoints: CurvePoints,
