@@ -7,7 +7,7 @@ import {
 
 import { TLogger, TStreamServer } from '../../di/tokens'
 import { Logger } from '../../utils/logger'
-import { BalanceService } from '../routes/balances/BalanceService'
+import { BalancesService } from '../routes/balances/BalancesService'
 
 @injectable()
 export class StreamService {
@@ -16,8 +16,8 @@ export class StreamService {
     private streamServer: StreamServer,
     @inject(TLogger)
     private dbg: Logger,
-    @inject(BalanceService)
-    private balanceService: BalanceService
+    @inject(BalancesService)
+    private balanceService: BalancesService
   ) {
     this.streamServer.on('connection', (connection: Connection) => {
       this.dbg('connection tag', connection.connectionTag)
@@ -25,11 +25,17 @@ export class StreamService {
       connection.on('stream', async (stream: DataAndMoneyStream) => {
         stream.on('money', amount => {
           dbg('incoming_money', amount)
+          if (paymentPointer) {
+            this.balanceService.logBalance({
+              paymentPointer,
+              amount: amount
+            })
+          }
         })
         if (process.env.QUICK_STREAM) {
           stream.setReceiveMax(Infinity)
         } else {
-          await this.acceptMoneySlowly(stream, paymentPointer)
+          await this.acceptMoneySlowly(stream)
         }
       })
     })
@@ -41,7 +47,7 @@ export class StreamService {
   /**
    * We want to slow the STREAM down a bit, so we can see the packets
    */
-  private async acceptMoneySlowly(stream: DataAndMoneyStream, pointer: any) {
+  private async acceptMoneySlowly(stream: DataAndMoneyStream) {
     let max = 20e3
     // TODO: seems stream isOpen when connection is closed ...
     while (stream.isOpen()) {
@@ -51,10 +57,6 @@ export class StreamService {
       await new Promise(resolve => setTimeout(resolve, timeout))
       const extra = 10e3 + rand(20e3)
       max += extra
-      this.balanceService.addData({
-        pointer: pointer,
-        amount: max
-      })
       this.dbg({ total: max })
     }
   }
