@@ -35,8 +35,6 @@ export class BalancesController extends BaseHttpController {
     <body>
     <script type="application/javascript">
     setInterval(() => {
-      // print data
-      ${this.printAllData()}
       window.location.reload()
     }, 1000)
 </script>
