@@ -7,6 +7,7 @@ import {
 
 import { TLogger, TStreamServer } from '../../di/tokens'
 import { Logger } from '../../utils/logger'
+import { BalanceService } from '../routes/balances/BalanceService'
 
 @injectable()
 export class StreamService {
@@ -14,10 +15,13 @@ export class StreamService {
     @inject(TStreamServer)
     private streamServer: StreamServer,
     @inject(TLogger)
-    private dbg: Logger
+    private dbg: Logger,
+    @inject(BalanceService)
+    private balanceService: BalanceService
   ) {
     this.streamServer.on('connection', (connection: Connection) => {
       this.dbg('connection tag', connection.connectionTag)
+      const paymentPointer = connection.connectionTag
       connection.on('stream', async (stream: DataAndMoneyStream) => {
         stream.on('money', amount => {
           dbg('incoming_money', amount)
@@ -25,7 +29,7 @@ export class StreamService {
         if (process.env.QUICK_STREAM) {
           stream.setReceiveMax(Infinity)
         } else {
-          await this.acceptMoneySlowly(stream)
+          await this.acceptMoneySlowly(stream, paymentPointer)
         }
       })
     })
@@ -37,7 +41,7 @@ export class StreamService {
   /**
    * We want to slow the STREAM down a bit, so we can see the packets
    */
-  private async acceptMoneySlowly(stream: DataAndMoneyStream) {
+  private async acceptMoneySlowly(stream: DataAndMoneyStream, pointer: any) {
     let max = 20e3
     // TODO: seems stream isOpen when connection is closed ...
     while (stream.isOpen()) {
@@ -47,6 +51,10 @@ export class StreamService {
       await new Promise(resolve => setTimeout(resolve, timeout))
       const extra = 10e3 + rand(20e3)
       max += extra
+      this.balanceService.addData({
+        pointer: pointer,
+        amount: max
+      })
       this.dbg({ total: max })
     }
   }

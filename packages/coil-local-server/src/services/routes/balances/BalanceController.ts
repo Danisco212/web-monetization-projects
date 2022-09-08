@@ -7,7 +7,7 @@ import {
 
 import { BalanceService } from './BalanceService'
 
-@controller('/balance')
+@controller('/balances')
 export class BalanceController extends BaseHttpController {
   constructor(private balance: BalanceService) {
     super()
@@ -17,7 +17,9 @@ export class BalanceController extends BaseHttpController {
   balances() {
     return `
         <p>
-This is where the balances of the payment pointer will be tallied ${this.balance.getSimpleData()}
+Payment pointer: ${
+      this.balance.getSimpleData()['pointer']
+    } has an amount of: $ ${this.balance.getSimpleData()['amount']}
 </p>  
         `
   }
