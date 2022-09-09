@@ -15,14 +15,12 @@ export class BalancesController extends BaseHttpController {
 
   private printAllData = () => {
     const keys = Object.keys(this.balance.getBalances())
-    const allAmounts: Array<any> = []
+    const allAmounts: Array<{ pointer: string; amount: number }> = []
     keys.forEach(key => {
-      const pointerAmount =
-        'Payment pointer: ' +
-        key +
-        ' - Amount:' +
-        this.balance.getBalances()[key] +
-        '<br>'
+      const pointerAmount = {
+        pointer: key,
+        amount: this.balance.getBalances()[key]
+      }
       allAmounts.push(pointerAmount)
     })
     return allAmounts
@@ -30,19 +28,22 @@ export class BalancesController extends BaseHttpController {
 
   @httpGet('/')
   balances() {
-    return `
-    <html>
-    <body>
-    <script type="application/javascript">
-    setInterval(() => {
-      window.location.reload()
-    }, 1000)
-</script>
-        <p>
-${this.printAllData()}
-</p> 
-</body>
-</html> 
-        `
+    return this.printAllData()
   }
+  //   balances() {
+  //     return `
+  //     <html>
+  //     <body>
+  //     <script type="application/javascript">
+  //     setInterval(() => {
+  //       window.location.reload()
+  //     }, 1000)
+  // </script>
+  //         <p>
+  // ${this.printAllData()}
+  // </p>
+  // </body>
+  // </html>
+  //         `
+  //   }
 }
